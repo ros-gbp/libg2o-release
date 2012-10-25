@@ -1,7 +1,7 @@
 <package>
   <name>libg2o</name>
   <description>g2o SLAM library</description>
-  <version>0.0.26</version>
+  <version>2012.10.24</version>
   <author>Rainer Kuemmerle</author>
   <author>Giorgio Grisetti</author>
   <author>Hauke Strasdat</author>
