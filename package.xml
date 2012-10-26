@@ -11,6 +11,7 @@
   <url>https://openslam.informatik.uni-freiburg.de/data/svn/g2o/trunk/</url>
   <license>BSD</license>
 
+  <build_depend>catkin</build_depend>
   <build_depend>cmake</build_depend>
   <build_depend>eigen</build_depend>
   <build_depend>opengl</build_depend>
