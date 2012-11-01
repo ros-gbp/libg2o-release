@@ -10,6 +10,7 @@
   <maintainer email="vrabaud@willowgarage.com">Vincent Rabaud</maintainer>
   <url>https://openslam.informatik.uni-freiburg.de/data/svn/g2o/trunk/</url>
   <license>BSD</license>
+  <copyright>The g2o developers</copyright>
 
   <build_depends>catkin</build_depends>
   <build_depends>cmake</build_depends>
