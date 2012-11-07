@@ -1,0 +1,41 @@
+From 7ce3eb1531fb310cef3e16b591ca91d78c22ec3b Mon Sep 17 00:00:00 2001
+From: Vincent Rabaud <vrabaud@willowgarage.com>
+Date: Wed, 24 Oct 2012 13:28:35 -0700
+Subject: [PATCH 1/6] add package.xml
+
+---
+ package.xml |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 package.xml
+
+diff --git a/package.xml b/package.xml
+new file mode 100644
+index 0000000..1d9495f
+--- /dev/null
++++ b/package.xml
+@@ -0,0 +1,22 @@
++<package>
++  <name>libg2o</name>
++  <description>g2o SLAM library</description>
++  <version>0.0.26</version>
++  <author>Rainer Kuemmerle</author>
++  <author>Giorgio Grisetti</author>
++  <author>Hauke Strasdat</author>
++  <author>Kurt Konolige</author>
++  <author>Wolfram Burgard</author>
++  <maintainer email="vrabaud@willowgarage.com">Vincent Rabaud</maintainer>
++  <url>https://openslam.informatik.uni-freiburg.de/data/svn/g2o/trunk/</url>
++  <license>BSD</license>
++
++  <build_depend>cmake</build_depend>
++  <build_depend>eigen</build_depend>
++  <build_depend>opengl</build_depend>
++  <build_depend>suitesparse</build_depend>
++
++  <run_depend>eigen</run_depend>
++  <run_depend>opengl</run_depend>
++  <run_depend>suitesparse</run_depend>
++</package>
+-- 
+1.7.10.4
+

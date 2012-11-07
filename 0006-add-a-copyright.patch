@@ -1,0 +1,24 @@
+From 8f172536071dd1d9a181e799468755ff7e96dbc2 Mon Sep 17 00:00:00 2001
+From: Vincent Rabaud <vrabaud@willowgarage.com>
+Date: Thu, 1 Nov 2012 14:03:24 -0700
+Subject: [PATCH 6/6] add a copyright
+
+---
+ stack.xml |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/stack.xml b/stack.xml
+index 48cbfcd..57a95d3 100644
+--- a/stack.xml
++++ b/stack.xml
+@@ -10,6 +10,7 @@
+   <maintainer email="vrabaud@willowgarage.com">Vincent Rabaud</maintainer>
+   <url>https://openslam.informatik.uni-freiburg.de/data/svn/g2o/trunk/</url>
+   <license>BSD</license>
++  <copyright>The g2o developers</copyright>
+ 
+   <build_depends>catkin</build_depends>
+   <build_depends>cmake</build_depends>
+-- 
+1.7.10.4
+

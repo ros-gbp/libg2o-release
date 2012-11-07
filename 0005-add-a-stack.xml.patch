@@ -1,0 +1,42 @@
+From 48fb11d661698749c93df6240e18d339001d3ec4 Mon Sep 17 00:00:00 2001
+From: Vincent Rabaud <vrabaud@willowgarage.com>
+Date: Thu, 1 Nov 2012 14:02:51 -0700
+Subject: [PATCH 5/6] add a stack.xml
+
+---
+ stack.xml |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+ create mode 100644 stack.xml
+
+diff --git a/stack.xml b/stack.xml
+new file mode 100644
+index 0000000..48cbfcd
+--- /dev/null
++++ b/stack.xml
+@@ -0,0 +1,23 @@
++<stack>
++  <name>libg2o</name>
++  <description>g2o SLAM library</description>
++  <version>2012.10.24</version>
++  <author>Rainer Kuemmerle</author>
++  <author>Giorgio Grisetti</author>
++  <author>Hauke Strasdat</author>
++  <author>Kurt Konolige</author>
++  <author>Wolfram Burgard</author>
++  <maintainer email="vrabaud@willowgarage.com">Vincent Rabaud</maintainer>
++  <url>https://openslam.informatik.uni-freiburg.de/data/svn/g2o/trunk/</url>
++  <license>BSD</license>
++
++  <build_depends>catkin</build_depends>
++  <build_depends>cmake</build_depends>
++  <build_depends>eigen</build_depends>
++  <build_depends>opengl</build_depends>
++  <build_depends>suitesparse</build_depends>
++
++  <depends>eigen</depends>
++  <depends>opengl</depends>
++  <depends>suitesparse</depends>
++</stack>
+-- 
+1.7.10.4
+

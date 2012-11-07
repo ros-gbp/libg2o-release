@@ -1,0 +1,25 @@
+From 5e55aae1eb4855c3c1cb74936a1b3300ce23fb70 Mon Sep 17 00:00:00 2001
+From: Vincent Rabaud <vrabaud@willowgarage.com>
+Date: Wed, 24 Oct 2012 17:09:58 -0700
+Subject: [PATCH 2/6] bump version number
+
+---
+ package.xml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/package.xml b/package.xml
+index 1d9495f..1cfb5b7 100644
+--- a/package.xml
++++ b/package.xml
+@@ -1,7 +1,7 @@
+ <package>
+   <name>libg2o</name>
+   <description>g2o SLAM library</description>
+-  <version>0.0.26</version>
++  <version>2012.10.24</version>
+   <author>Rainer Kuemmerle</author>
+   <author>Giorgio Grisetti</author>
+   <author>Hauke Strasdat</author>
+-- 
+1.7.10.4
+

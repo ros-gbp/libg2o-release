@@ -1,0 +1,23 @@
+From 8eb98e99a3cdd59f9831be6db8388d44ef5a1a33 Mon Sep 17 00:00:00 2001
+From: Vincent Rabaud <vrabaud@willowgarage.com>
+Date: Sun, 28 Oct 2012 18:23:23 -0700
+Subject: [PATCH 4/6] fix the g2o call
+
+---
+ CMakeLists.txt |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d306a48..99e2f6d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -241,5 +241,6 @@ INSTALL(FILES ${PROJECT_BINARY_DIR}/g2o/config.h DESTINATION ${CMAKE_INSTALL_PRE
+ ADD_SUBDIRECTORY(EXTERNAL)
+ ADD_SUBDIRECTORY(g2o)
+ 
++project(libg2o)
+ find_package(catkin)
+ catkin_package()
+-- 
+1.7.10.4
+

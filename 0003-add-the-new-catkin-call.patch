@@ -1,0 +1,36 @@
+From e6d4f82b321b1ecf5c471d4e534537a3bddbbf69 Mon Sep 17 00:00:00 2001
+From: Vincent Rabaud <vrabaud@willowgarage.com>
+Date: Fri, 26 Oct 2012 12:57:07 -0700
+Subject: [PATCH 3/6] add the new catkin call
+
+---
+ CMakeLists.txt |    3 +++
+ package.xml    |    1 +
+ 2 files changed, 4 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 1dc20dc..d306a48 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -240,3 +240,6 @@ INSTALL(FILES ${PROJECT_BINARY_DIR}/g2o/config.h DESTINATION ${CMAKE_INSTALL_PRE
+ # Include the subdirectories
+ ADD_SUBDIRECTORY(EXTERNAL)
+ ADD_SUBDIRECTORY(g2o)
++
++find_package(catkin)
++catkin_package()
+diff --git a/package.xml b/package.xml
+index 1cfb5b7..ec62713 100644
+--- a/package.xml
++++ b/package.xml
+@@ -11,6 +11,7 @@
+   <url>https://openslam.informatik.uni-freiburg.de/data/svn/g2o/trunk/</url>
+   <license>BSD</license>
+ 
++  <build_depend>catkin</build_depend>
+   <build_depend>cmake</build_depend>
+   <build_depend>eigen</build_depend>
+   <build_depend>opengl</build_depend>
+-- 
+1.7.10.4
+
