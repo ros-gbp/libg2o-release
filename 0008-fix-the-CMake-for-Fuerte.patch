@@ -1,7 +1,7 @@
-From e80c019cd26a368d522955aa852863804f22c8a9 Mon Sep 17 00:00:00 2001
+From 71fb70eee67bb17b4151d73078bf83f6dae0cea4 Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
 Date: Thu, 8 Nov 2012 11:15:20 -0800
-Subject: [PATCH 8/9] fix the CMake for Fuerte
+Subject: [PATCH 08/11] fix the CMake for Fuerte
 
 ---
  CMakeLists.txt |    5 +++++

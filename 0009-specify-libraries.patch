@@ -1,7 +1,7 @@
-From 96a751ee1c5f2b8a5d708d05d94e6f1b0a2d47a2 Mon Sep 17 00:00:00 2001
+From 54eacc6f38a71540210b55982253098d74a47674 Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
 Date: Thu, 8 Nov 2012 14:43:21 -0800
-Subject: [PATCH 9/9] specify libraries
+Subject: [PATCH 09/11] specify libraries
 
 ---
  CMakeLists.txt |    8 ++++++--

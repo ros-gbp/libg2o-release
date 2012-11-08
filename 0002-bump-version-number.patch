@@ -1,7 +1,7 @@
-From 0edab1c8a584fa55190bb1807a1811c06c7297c5 Mon Sep 17 00:00:00 2001
+From b6a55b16866b5f52b0243d67f5be5ed81051f03e Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
 Date: Wed, 24 Oct 2012 17:09:58 -0700
-Subject: [PATCH 2/9] bump version number
+Subject: [PATCH 02/11] bump version number
 
 ---
  package.xml |    2 +-

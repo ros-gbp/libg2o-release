@@ -1,7 +1,7 @@
-From 4fc6125143ac1716c49ab6ad72f3aac25e1a66f4 Mon Sep 17 00:00:00 2001
+From a9ea9b914e233321c9905bfbc8816d3e2c14987b Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
 Date: Thu, 1 Nov 2012 14:03:24 -0700
-Subject: [PATCH 6/9] add a copyright
+Subject: [PATCH 06/11] add a copyright
 
 ---
  stack.xml |    1 +

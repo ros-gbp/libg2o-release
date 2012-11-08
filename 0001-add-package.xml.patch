@@ -1,7 +1,7 @@
-From 376366a6fd208da98113736dbd3298b4ac2c76e1 Mon Sep 17 00:00:00 2001
+From d8364344f6caaa136d58e3974e7282c781f42ad0 Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
 Date: Wed, 24 Oct 2012 13:28:35 -0700
-Subject: [PATCH 1/9] add package.xml
+Subject: [PATCH 01/11] add package.xml
 
 ---
  package.xml |   22 ++++++++++++++++++++++

@@ -1,7 +1,7 @@
-From 7f51fd70fe4eb703a197dae25953622862a06ced Mon Sep 17 00:00:00 2001
+From f2828dbd677f7b32e7a802116e8c784051db0fd8 Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
 Date: Thu, 1 Nov 2012 14:02:51 -0700
-Subject: [PATCH 5/9] add a stack.xml
+Subject: [PATCH 05/11] add a stack.xml
 
 ---
  stack.xml |   23 +++++++++++++++++++++++

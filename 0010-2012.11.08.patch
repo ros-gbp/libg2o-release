@@ -1,7 +1,7 @@
-From ef8f7380edf4dc1f329155f6efa3caaa4ef95662 Mon Sep 17 00:00:00 2001
+From 013fb59e11412e464b67cd46cc609063ff32e3c7 Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
-Date: Wed, 7 Nov 2012 15:25:41 -0800
-Subject: [PATCH 07/11] 2012.11.04
+Date: Thu, 8 Nov 2012 15:01:00 -0800
+Subject: [PATCH 10/11] 2012.11.08
 
 ---
  package.xml |    2 +-
@@ -9,28 +9,28 @@ Subject: [PATCH 07/11] 2012.11.04
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/package.xml b/package.xml
-index ec62713..7225f64 100644
+index 7225f64..2caad78 100644
 --- a/package.xml
 +++ b/package.xml
 @@ -1,7 +1,7 @@
  <package>
    <name>libg2o</name>
    <description>g2o SLAM library</description>
--  <version>2012.10.24</version>
-+  <version>2012.11.04</version>
+-  <version>2012.11.04</version>
++  <version>2012.11.08</version>
    <author>Rainer Kuemmerle</author>
    <author>Giorgio Grisetti</author>
    <author>Hauke Strasdat</author>
 diff --git a/stack.xml b/stack.xml
-index 57a95d3..f7eaba1 100644
+index f7eaba1..8e00e10 100644
 --- a/stack.xml
 +++ b/stack.xml
 @@ -1,7 +1,7 @@
  <stack>
    <name>libg2o</name>
    <description>g2o SLAM library</description>
--  <version>2012.10.24</version>
-+  <version>2012.11.04</version>
+-  <version>2012.11.04</version>
++  <version>2012.11.08</version>
    <author>Rainer Kuemmerle</author>
    <author>Giorgio Grisetti</author>
    <author>Hauke Strasdat</author>
