@@ -1,0 +1,26 @@
+From e80c019cd26a368d522955aa852863804f22c8a9 Mon Sep 17 00:00:00 2001
+From: Vincent Rabaud <vrabaud@willowgarage.com>
+Date: Thu, 8 Nov 2012 11:15:20 -0800
+Subject: [PATCH 8/9] fix the CMake for Fuerte
+
+---
+ CMakeLists.txt |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 99e2f6d..c60c2a0 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -243,4 +243,9 @@ ADD_SUBDIRECTORY(g2o)
+ 
+ project(libg2o)
+ find_package(catkin)
++if (${catkin_VERSION} VERSION_GREATER "0.5.28")
+ catkin_package()
++else()
++catkin_stack()
++catkin_project(libg2o)
++endif()
+-- 
+1.7.10.4
+

@@ -1,0 +1,31 @@
+From 96a751ee1c5f2b8a5d708d05d94e6f1b0a2d47a2 Mon Sep 17 00:00:00 2001
+From: Vincent Rabaud <vrabaud@willowgarage.com>
+Date: Thu, 8 Nov 2012 14:43:21 -0800
+Subject: [PATCH 9/9] specify libraries
+
+---
+ CMakeLists.txt |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c60c2a0..4405d44 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -244,8 +244,12 @@ ADD_SUBDIRECTORY(g2o)
+ project(libg2o)
+ find_package(catkin)
+ if (${catkin_VERSION} VERSION_GREATER "0.5.28")
+-catkin_package()
++catkin_package(INCLUDE_DIRS include
++               LIBRARIES ${LIB_PREFIX}core ${LIB_PREFIX}types_slam3d ${LIB_PREFIX}types_icp ${LIB_PREFIX}stuff ${LIB_PREFIX}csparse_extension
++)
+ else()
+ catkin_stack()
+-catkin_project(libg2o)
++catkin_project(libg2o INCLUDE_DIRS include
++                      LIBRARIES ${LIB_PREFIX}core ${LIB_PREFIX}types_slam3d ${LIB_PREFIX}types_icp ${LIB_PREFIX}stuff ${LIB_PREFIX}csparse_extension
++)
+ endif()
+-- 
+1.7.10.4
+

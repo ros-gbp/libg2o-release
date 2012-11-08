@@ -1,7 +1,7 @@
-From e6d4f82b321b1ecf5c471d4e534537a3bddbbf69 Mon Sep 17 00:00:00 2001
+From 35bb5cbc14458429e7c824fec3c273169159bce9 Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
 Date: Fri, 26 Oct 2012 12:57:07 -0700
-Subject: [PATCH 3/6] add the new catkin call
+Subject: [PATCH 3/9] add the new catkin call
 
 ---
  CMakeLists.txt |    3 +++

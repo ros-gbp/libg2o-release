@@ -1,7 +1,7 @@
-From 8eb98e99a3cdd59f9831be6db8388d44ef5a1a33 Mon Sep 17 00:00:00 2001
+From 6c16c15c5fdbdb93c9698d9cef2cb0d218396736 Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
 Date: Sun, 28 Oct 2012 18:23:23 -0700
-Subject: [PATCH 4/6] fix the g2o call
+Subject: [PATCH 4/9] fix the g2o call
 
 ---
  CMakeLists.txt |    1 +
