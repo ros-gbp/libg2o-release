@@ -1,0 +1,12 @@
+Source: ros-groovy-libg2o
+Section: misc
+Priority: extra
+Maintainer: Vincent Rabaud <vrabaud@willowgarage.com>
+Build-Depends: debhelper (>= 7.0.50~), libgl1-mesa-dev,libglu1-mesa-dev,ros-groovy-catkin,libeigen3-dev,libsuitesparse-dev
+Homepage: https://openslam.informatik.uni-freiburg.de/data/svn/g2o/trunk/
+Standards-Version: 3.9.2
+
+Package: ros-groovy-libg2o
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libgl1-mesa-dev,libglu1-mesa-dev,libeigen3-dev,libsuitesparse-dev
+Description: g2o SLAM library
