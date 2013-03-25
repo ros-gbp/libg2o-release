@@ -1,0 +1,23 @@
+From 8ddbbabecf9610144d4f56819c38d2c04f24ec35 Mon Sep 17 00:00:00 2001
+From: Vincent Rabaud <vincent.rabaud@gmail.com>
+Date: Mon, 25 Mar 2013 20:32:19 +0000
+Subject: [PATCH] Added install rule for package.xml
+
+---
+ CMakeLists.txt |    3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2f6979b..fe24bb4 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -240,3 +240,6 @@ INSTALL(FILES ${PROJECT_BINARY_DIR}/g2o/config.h DESTINATION ${CMAKE_INSTALL_PRE
+ # Include the subdirectories
+ ADD_SUBDIRECTORY(EXTERNAL)
+ ADD_SUBDIRECTORY(g2o)
++
++# Install catkin package.xml
++install(FILES package.xml DESTINATION share/libg2o)
+-- 
+1.7.9.5
+
