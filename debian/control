@@ -1,0 +1,12 @@
+Source: ros-hydro-libg2o
+Section: misc
+Priority: extra
+Maintainer: Vincent Rabaud <vrabaud@willowgarage.com>
+Build-Depends: debhelper (>= 7.0.50~), cmake, libeigen3-dev, libgl1-mesa-dev, libglu1-mesa-dev, libsuitesparse-dev, ros-hydro-catkin
+Homepage: https://openslam.informatik.uni-freiburg.de/data/svn/g2o/trunk/
+Standards-Version: 3.9.2
+
+Package: ros-hydro-libg2o
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, libgl1-mesa-dev, libglu1-mesa-dev, libsuitesparse-dev, ros-hydro-catkin
+Description: g2o SLAM library
