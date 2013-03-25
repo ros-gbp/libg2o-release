@@ -24,45 +24,52 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "types_slam2d.h"
+#ifndef G2O_TICTOC_H
+#define G2O_TICTOC_H
 
-#include "g2o/core/factory.h"
+#include "g2o_stuff_api.h"
 
-#include "g2o/stuff/macros.h"
-
-#include <iostream>
+#include <string>
 
 namespace g2o {
 
-  G2O_REGISTER_TYPE_GROUP(slam2d);
+  /**
+   * \brief Profile the timing of certain parts of your algorithm.
+   *
+   * Profile the timing of certain parts of your algorithm.
+   * A typical use-case is as follows:
+   *
+   * tictoc("doSomething");
+   * // place the code here.
+   * tictoc("doSomething");
+   *
+   * This will calculate statistics for the operations within
+   * the two calls to tictoc()
+   *
+   * If the environment variable G2O_ENABLE_TICTOC is defined, the timing will
+   * be performed.
+   */
+   G2O_STUFF_API double tictoc(const char* algorithmPart);
 
-  G2O_REGISTER_TYPE(VERTEX_SE2, VertexSE2);
-  G2O_REGISTER_TYPE(VERTEX_XY, VertexPointXY);
-  G2O_REGISTER_TYPE(PARAMS_SE2OFFSET, ParameterSE2Offset);
-  G2O_REGISTER_TYPE(CACHE_SE2_OFFSET, CacheSE2Offset);
-  G2O_REGISTER_TYPE(EDGE_PRIOR_SE2, EdgeSE2Prior);
-  G2O_REGISTER_TYPE(EDGE_PRIOR_SE2_XY, EdgeSE2XYPrior);
-  G2O_REGISTER_TYPE(EDGE_SE2, EdgeSE2);
-  G2O_REGISTER_TYPE(EDGE_SE2_XY, EdgeSE2PointXY);
-  G2O_REGISTER_TYPE(EDGE_BEARING_SE2_XY, EdgeSE2PointXYBearing);
-  G2O_REGISTER_TYPE(EDGE_SE2_XY_CALIB, EdgeSE2PointXYCalib);
-  G2O_REGISTER_TYPE(EDGE_SE2_OFFSET, EdgeSE2Offset);
-  G2O_REGISTER_TYPE(EDGE_SE2_POINTXY_OFFSET, EdgeSE2PointXYOffset);
+   /**
+    * \brief Simplify calls to tictoc() for a whole scope
+    *
+    * See also the macro G2O_SCOPED_TICTOC below.
+    */
+   class G2O_STUFF_API ScopedTictoc
+   {
+     public:
+       ScopedTictoc(const char* algorithmPart);
+       ~ScopedTictoc();
+     protected:
+       std::string _algorithmPart;
+   };
 
- 
-  G2O_REGISTER_ACTION(VertexSE2WriteGnuplotAction);
-  G2O_REGISTER_ACTION(VertexPointXYWriteGnuplotAction);
-  G2O_REGISTER_ACTION(EdgeSE2WriteGnuplotAction);
-  G2O_REGISTER_ACTION(EdgeSE2PointXYWriteGnuplotAction);
-  G2O_REGISTER_ACTION(EdgeSE2PointXYBearingWriteGnuplotAction);
+} // end namespace
 
-
-#ifdef G2O_HAVE_OPENGL
-  G2O_REGISTER_ACTION(VertexSE2DrawAction);
-  G2O_REGISTER_ACTION(VertexPointXYDrawAction);
-  G2O_REGISTER_ACTION(EdgeSE2DrawAction);
-  G2O_REGISTER_ACTION(EdgeSE2PointXYDrawAction);
-  G2O_REGISTER_ACTION(EdgeSE2PointXYBearingDrawAction);
+#ifndef G2O_SCOPED_TICTOC
+#define G2O_SCOPED_TICTOC(s) \
+  g2o::ScopedTictoc scopedTictoc (s)
+#endif
 
 #endif
-} // end namespace
