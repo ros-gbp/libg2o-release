@@ -40,8 +40,8 @@
 #include <iostream>
 
 #ifdef WINDOWS
-#include <windows.h>
-#include <winbase.h>
+#include <Windows.h>
+#include <WinBase.h>
 #endif
 
 #if (defined (UNIX) || defined(CYGWIN)) && !defined(ANDROID)

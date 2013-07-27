@@ -99,7 +99,7 @@ namespace g2o {
         t=get_monotonic_time();
       }
       // update the diagonal of the system matrix
-      _solver->setLambda(_currentLambda, true);
+      _solver->setLambda(_currentLambda);
       bool ok2 = _solver->solve();
       if (globalStats) {
         globalStats->timeLinearSolution+=get_monotonic_time()-t;
@@ -111,7 +111,7 @@ namespace g2o {
       }
 
       // restore the diagonal
-      _solver->restoreDiagonal();
+      _solver->setLambda(- _currentLambda);
 
       _optimizer->computeActiveErrors();
       tempChi = _optimizer->activeRobustChi2();

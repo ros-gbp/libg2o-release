@@ -200,7 +200,7 @@ namespace g2o {
           int dim = estimateDimension();
           assert((dim == -1) || (estimate.size() == std::size_t(dim)));
 #endif
-          return setEstimateData(&estimate[0]);
+          return setEstimateData(estimate.data());
         };
 
         /**
@@ -218,7 +218,7 @@ namespace g2o {
           if (dim < 0)
             return false;
           estimate.resize(dim);
-          return getEstimateData(&estimate[0]);
+          return getEstimateData(estimate.data());
         };
 
         /**
@@ -244,7 +244,7 @@ namespace g2o {
           int dim = minimalEstimateDimension();
           assert((dim == -1) || (estimate.size() == std::size_t(dim)));
 #endif
-          return setMinimalEstimateData(&estimate[0]);
+          return setMinimalEstimateData(estimate.data());
         };
 
         /**
@@ -262,7 +262,7 @@ namespace g2o {
           if (dim < 0)
             return false;
           estimate.resize(dim);
-          return getMinimalEstimateData(&estimate[0]);
+          return getMinimalEstimateData(estimate.data());
         };
 
         /**
@@ -630,10 +630,7 @@ namespace g2o {
      */
     bool isSolverSuitable(const OptimizationAlgorithmProperty& solverProperty, const std::set<int>& vertDims = std::set<int>()) const;
 
-    /**
-     * remove the parameters of the graph
-     */
-    virtual void clearParameters();
+    virtual void clear();
 
     bool addParameter(Parameter* p) {
       return _parameters.addParameter(p);

@@ -98,9 +98,9 @@ namespace g2o {
     glPushMatrix();
     glColor3f(1.f,0.2f,1.f);
     glTranslatef(that->position().x(), that->position().y(), that->position().z());
-    float textSize = 1;
+    double textSize = 1;
     if (_textSize )
-      textSize = (float)_textSize->value();
+      textSize = _textSize->value();
     opengl::drawBox(0.1f*textSize, 0.1f*textSize, 0.1f*textSize);
     glTranslatef(0.2f*textSize, 0.f, 0.f);
     glScalef(0.003f*textSize,0.003f*textSize,1.f);

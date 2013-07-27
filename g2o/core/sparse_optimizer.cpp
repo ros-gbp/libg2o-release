@@ -484,7 +484,7 @@ namespace g2o{
     _ivMap.clear();
     _activeVertices.clear();
     _activeEdges.clear();
-    OptimizableGraph::clear();
+    HyperGraph::clear();
   }
 
   SparseOptimizer::VertexContainer::const_iterator SparseOptimizer::findActiveVertex(const OptimizableGraph::Vertex* v) const

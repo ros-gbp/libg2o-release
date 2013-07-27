@@ -101,11 +101,6 @@ class G2O_STUFF_API CommandArgs
      */
     void printHelp(std::ostream& os);
 
-    /**
-     * returns true, if the param was parsed via the command line
-     */
-    bool parsedParam(const std::string& paramFlag) const;
-
   protected:
     std::vector<CommandArgument> _args;
     std::vector<CommandArgument> _leftOvers;

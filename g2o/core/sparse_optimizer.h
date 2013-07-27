@@ -234,8 +234,6 @@ namespace g2o {
 
     /**
      * clears the graph, and polishes some intermediate structures
-     * Note that this only removes nodes / edges. Parameters can be removed
-     * with clearParameters().
      */
     virtual void clear();
 

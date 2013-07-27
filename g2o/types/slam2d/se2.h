@@ -106,13 +106,6 @@ namespace g2o {
         return Vector3d(_t.x(), _t.y(), _R.angle());
       }
 
-      operator Eigen::Isometry2d() const
-      {
-        Eigen::Isometry2d result = (Eigen::Isometry2d) rotation();
-        result.translation() = translation();
-        return result;
-      }
-
     protected:
       Rotation2Dd _R;
       Vector2d _t;
