@@ -240,20 +240,3 @@ INSTALL(FILES ${PROJECT_BINARY_DIR}/g2o/config.h DESTINATION ${CMAKE_INSTALL_PRE
 # Include the subdirectories
 ADD_SUBDIRECTORY(EXTERNAL)
 ADD_SUBDIRECTORY(g2o)
-
-project(libg2o)
-find_package(catkin)
-
-set(FILES "")
-foreach(file cli core csparse_extension ext_freeglut_minimal incremental interactive interface opengl_helper parser
-             simulator solver_cholmod solver_csparse solver_dense solver_pcg solver_slam2d_linear solver_structure_only stuff types_data types_icp types_sba
-             types_sclam2d types_sim3 types_slam2d types_slam3d)
-list(APPEND FILES ${LIB_PREFIX}${file})
-endforeach()
-if (${catkin_VERSION} VERSION_GREATER "0.5.28")
-catkin_package(LIBRARIES ${FILES}
-)
-else()
-catkin_stack()
-catkin_project(libg2o LIBRARIES ${FILES})
-endif()
