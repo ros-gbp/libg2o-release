@@ -1,18 +1,23 @@
+<?xml version="1.0"?>
 <package>
   <name>libg2o</name>
-  <description>g2o SLAM library</description>
   <version>2012.11.09</version>
+  <description>The libg2o library from http://openslam.org/g2o.html</description>
+  <url>https://github.com/RainerKuemmerle/g2o</url>
+
   <author>Rainer Kuemmerle</author>
   <author>Giorgio Grisetti</author>
   <author>Hauke Strasdat</author>
   <author>Kurt Konolige</author>
   <author>Wolfram Burgard</author>
-  <maintainer email="vrabaud@willowgarage.com">Vincent Rabaud</maintainer>
-  <url>https://openslam.informatik.uni-freiburg.de/data/svn/g2o/trunk/</url>
+  <maintainer email="vincent.rabaud@gmail.com">Vincent Rabaud</maintainer>
   <license>BSD</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
-  
+  <run_depend>catkin</run_depend>
+  <buildtool_depend>cmake</buildtool_depend>
+  <build_depend>boost</build_depend>
+  <run_depend>boost</run_depend>
+
   <build_depend>eigen</build_depend>
   <build_depend>opengl</build_depend>
   <build_depend>suitesparse</build_depend>
@@ -20,4 +25,8 @@
   <run_depend>eigen</run_depend>
   <run_depend>opengl</run_depend>
   <run_depend>suitesparse</run_depend>
+
+  <export>
+    <build_type>cmake</build_type>
+  </export>
 </package>
