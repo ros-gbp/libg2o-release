@@ -10,7 +10,7 @@ tracks:
       -i :{release_inc}
     devel_branch: null
     name: upstream
-    patches: null
+    patches: hydro
     release_inc: -1
     release_repo_url: null
     release_tag: :{ask}
