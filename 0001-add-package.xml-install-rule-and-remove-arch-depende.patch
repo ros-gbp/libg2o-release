@@ -1,4 +1,4 @@
-From ed081caa40c7dd904414daba14062f4e23a0ec8a Mon Sep 17 00:00:00 2001
+From e0d0fb0235917c5a8d831d71ce9ccd7480500f2d Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
 Date: Sat, 27 Jul 2013 17:05:18 +0000
 Subject: [PATCH] add package.xml install rule and remove arch dependent stuff
