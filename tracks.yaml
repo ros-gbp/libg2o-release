@@ -12,7 +12,7 @@ tracks:
     last_version: 2013.07.03
     name: upstream
     patches: hydro
-    release_inc: '1'
+    release_inc: '2'
     release_repo_url: null
     release_tag: :{ask}
     ros_distro: hydro
