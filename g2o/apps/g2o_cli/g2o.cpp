@@ -348,11 +348,17 @@ int main(int argc, char** argv)
   }
 
   if (incremental) {
+    cerr << CL_RED("# Note: this variant performs batch steps in each time step") << endl;
+    cerr << CL_RED("#       For a variant which updates the Cholesky factor use the binary g2o_incremental") << endl;
     int incIterations = maxIterations;
+    if (! arg.parsedParam("i")) {
+      cerr << "# Setting default number of iterations" << endl;
+      incIterations = 1;
+    }
     int updateDisplayEveryN = updateGraphEachN;
     int maxDim = 0;
 
-    cerr << "# incremental setttings" << endl;
+    cerr << "# incremental settings" << endl;
     cerr << "#\t solve every " << updateGraphEachN << endl;
     cerr << "#\t iterations  " << incIterations << endl;
 
