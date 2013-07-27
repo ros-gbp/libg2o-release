@@ -1,4 +1,4 @@
-From f6324dd7a3f6a29440cca21f4247fe04dff32e99 Mon Sep 17 00:00:00 2001
+From beaf7ab939d05820b5af2f765c48b3ec502609d7 Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vincent.rabaud@gmail.com>
 Date: Mon, 25 Mar 2013 20:32:19 +0000
 Subject: [PATCH] Added install rule for package.xml
