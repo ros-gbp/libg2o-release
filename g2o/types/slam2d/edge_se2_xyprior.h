@@ -24,37 +24,50 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef EDGE_SE2_PURE_CALIB_H
-#define EDGE_SE2_PURE_CALIB_H
+#ifndef G2O_EDGE_SE2_PRIOR_XY_H
+#define G2O_EDGE_SE2_PRIOR_XY_H
 
-#include "g2o/types/sclam2d/odometry_measurement.h"
-#include "g2o/types/sclam2d/vertex_odom_differential_params.h"
-#include "g2o/types/slam2d/vertex_se2.h"
-#include "g2o/core/base_binary_edge.h"
-#include "g2o_calibration_odom_laser_api.h"
+#include "vertex_se2.h"
+#include "g2o/core/base_unary_edge.h"
+#include "g2o_types_slam2d_api.h"
 
 namespace g2o {
 
-  struct G2O_CALIBRATION_ODOM_LASER_API OdomAndLaserMotion
-  {
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
-    VelocityMeasurement velocityMeasurement;
-    SE2 laserMotion;
-  };
-
   /**
-   * \brief calibrate odometry and laser based on a set of measurements
+   * \brief Prior for a two D pose with constraints only in xy direction (like gps)
    */
-  class G2O_CALIBRATION_ODOM_LASER_API EdgeSE2PureCalib : public BaseBinaryEdge<3, OdomAndLaserMotion, VertexSE2, VertexOdomDifferentialParams>
+  class G2O_TYPES_SLAM2D_API EdgeSE2XYPrior : public BaseUnaryEdge<2, Eigen::Vector2d, VertexSE2>
   {
-    public:
-      EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
-      EdgeSE2PureCalib();
+  public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
+    EdgeSE2XYPrior();
 
-      void computeError();
+    virtual bool setMeasurementData(const double* d)
+    {
+      _measurement[0]=d[0];
+      _measurement[1]=d[1];
+      return true;
+    }
 
-      virtual bool read(std::istream& is);
-      virtual bool write(std::ostream& os) const;
+    virtual bool getMeasurementData(double* d) const
+    {
+      d[0] = _measurement[0];
+      d[1] = _measurement[1];
+      return true;
+    }
+
+    virtual int measurementDimension() const {return 2;}
+
+    virtual void linearizeOplus();
+
+    virtual bool read(std::istream& is);
+    virtual bool write(std::ostream& os) const;
+      
+    virtual void computeError()
+    {
+      const VertexSE2* v = static_cast<const VertexSE2*>(_vertices[0]);
+      _error = v->estimate().translation() - _measurement;
+    }
   };
 
 } // end namespace

@@ -24,39 +24,52 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef EDGE_SE2_PURE_CALIB_H
-#define EDGE_SE2_PURE_CALIB_H
+#ifndef G2O_TICTOC_H
+#define G2O_TICTOC_H
 
-#include "g2o/types/sclam2d/odometry_measurement.h"
-#include "g2o/types/sclam2d/vertex_odom_differential_params.h"
-#include "g2o/types/slam2d/vertex_se2.h"
-#include "g2o/core/base_binary_edge.h"
-#include "g2o_calibration_odom_laser_api.h"
+#include "g2o_stuff_api.h"
+
+#include <string>
 
 namespace g2o {
 
-  struct G2O_CALIBRATION_ODOM_LASER_API OdomAndLaserMotion
-  {
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
-    VelocityMeasurement velocityMeasurement;
-    SE2 laserMotion;
-  };
-
   /**
-   * \brief calibrate odometry and laser based on a set of measurements
+   * \brief Profile the timing of certain parts of your algorithm.
+   *
+   * Profile the timing of certain parts of your algorithm.
+   * A typical use-case is as follows:
+   *
+   * tictoc("doSomething");
+   * // place the code here.
+   * tictoc("doSomething");
+   *
+   * This will calculate statistics for the operations within
+   * the two calls to tictoc()
+   *
+   * If the environment variable G2O_ENABLE_TICTOC is defined, the timing will
+   * be performed.
    */
-  class G2O_CALIBRATION_ODOM_LASER_API EdgeSE2PureCalib : public BaseBinaryEdge<3, OdomAndLaserMotion, VertexSE2, VertexOdomDifferentialParams>
-  {
-    public:
-      EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
-      EdgeSE2PureCalib();
+   G2O_STUFF_API double tictoc(const char* algorithmPart);
 
-      void computeError();
-
-      virtual bool read(std::istream& is);
-      virtual bool write(std::ostream& os) const;
-  };
+   /**
+    * \brief Simplify calls to tictoc() for a whole scope
+    *
+    * See also the macro G2O_SCOPED_TICTOC below.
+    */
+   class G2O_STUFF_API ScopedTictoc
+   {
+     public:
+       ScopedTictoc(const char* algorithmPart);
+       ~ScopedTictoc();
+     protected:
+       std::string _algorithmPart;
+   };
 
 } // end namespace
+
+#ifndef G2O_SCOPED_TICTOC
+#define G2O_SCOPED_TICTOC(s) \
+  g2o::ScopedTictoc scopedTictoc (s)
+#endif
 
 #endif
