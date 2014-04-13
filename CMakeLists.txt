@@ -190,10 +190,6 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
     #SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}") 
   #ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   # Linux
-  IF(NOT ${ARCH} MATCHES arm AND ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native") 
-    SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -march=native") 
-  ENDIF()
   # activate warnings !!!
   SET(g2o_C_FLAGS "${g2o_C_FLAGS} -Wall -W")
   SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -Wall -W")
@@ -240,3 +236,6 @@ INSTALL(FILES ${PROJECT_BINARY_DIR}/g2o/config.h DESTINATION ${CMAKE_INSTALL_PRE
 # Include the subdirectories
 ADD_SUBDIRECTORY(EXTERNAL)
 ADD_SUBDIRECTORY(g2o)
+
+# Install catkin package.xml
+install(FILES package.xml DESTINATION share/libg2o)
