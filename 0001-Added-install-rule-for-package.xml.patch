@@ -1,4 +1,4 @@
-From c879ddb460bdc49f4a7ddaef09b572af4b622a54 Mon Sep 17 00:00:00 2001
+From cffe3905321fd55ea9a38bff792d9bb48cdaf5f2 Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vincent.rabaud@gmail.com>
 Date: Mon, 25 Mar 2013 20:32:19 +0000
 Subject: [PATCH 1/2] Added install rule for package.xml
@@ -19,5 +19,5 @@ index 2f6979b..fe24bb4 100644
 +# Install catkin package.xml
 +install(FILES package.xml DESTINATION share/libg2o)
 -- 
-1.8.1.2
+1.9.1
 
