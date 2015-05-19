@@ -173,12 +173,13 @@ ENDIF(G2O_BUILD_EXAMPLES)
 
 # Compiler specific options for gcc
 IF(CMAKE_COMPILER_IS_GNUCXX)
+  OPTION (BUILD_WITH_MARCH_NATIVE "Build with \"-march native\"" ON)
   MESSAGE(STATUS "Compiling with GCC")
   
   IF(NOT ${ARCH} MATCHES arm)
     # Generic settings for optimisation
-    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -msse4")
-    SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3 -msse4")
+    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -msse4.2")
+    SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3 -msse4.2")
   ENDIF()
   # switch off optimization for debug builds
   SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
@@ -190,9 +191,9 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
     #SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}") 
   #ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   # Linux
-  IF(NOT ${ARCH} MATCHES arm AND ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native") 
-    SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -march=native") 
+  IF(BUILD_WITH_MARCH_NATIVE AND NOT ${ARCH} MATCHES arm AND ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native")
+    SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -march=native")
   ENDIF()
   # activate warnings !!!
   SET(g2o_C_FLAGS "${g2o_C_FLAGS} -Wall -W")
@@ -207,8 +208,22 @@ IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   #SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -Weverything")
   SET(g2o_C_FLAGS "${g2o_C_FLAGS} -Wall")
   SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -Wall")
+  #SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -Wall -stdlib=libc++")
 ENDIF()
 
+# C++11 support
+IF(NOT MSVC)
+  include(CheckCXXCompilerFlag)
+  CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+  CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+  if(COMPILER_SUPPORTS_CXX11)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  elseif(COMPILER_SUPPORTS_CXX0X)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+  else()
+    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+  endif()
+endif()
 
 # specifying compiler flags
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${g2o_CXX_FLAGS}")
