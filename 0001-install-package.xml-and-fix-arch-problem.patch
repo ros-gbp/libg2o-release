@@ -1,0 +1,34 @@
+From 7c868ea5623c71b30253ec3484cc8715bbb9e6f5 Mon Sep 17 00:00:00 2001
+From: Vincent Rabaud <vincent.rabaud@gmail.com>
+Date: Tue, 19 May 2015 21:17:25 +0200
+Subject: [PATCH] install package.xml and fix arch problem
+
+---
+ CMakeLists.txt | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f9ddb02..9bd4c0b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -191,10 +191,6 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
+     #SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}") 
+   #ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+   # Linux
+-  IF(BUILD_WITH_MARCH_NATIVE AND NOT ${ARCH} MATCHES arm AND ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+-    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native")
+-    SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -march=native")
+-  ENDIF()
+   # activate warnings !!!
+   SET(g2o_C_FLAGS "${g2o_C_FLAGS} -Wall -W")
+   SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -Wall -W")
+@@ -255,3 +251,6 @@ INSTALL(FILES ${PROJECT_BINARY_DIR}/g2o/config.h DESTINATION ${CMAKE_INSTALL_PRE
+ # Include the subdirectories
+ ADD_SUBDIRECTORY(EXTERNAL)
+ ADD_SUBDIRECTORY(g2o)
++
++# Install catkin package.xml
++install(FILES package.xml DESTINATION share/libg2o)
+-- 
+1.9.1
+
