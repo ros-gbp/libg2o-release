@@ -29,8 +29,6 @@
 #include "vertex_se3_quat.h"
 #include "g2o/stuff/opengl_wrapper.h"
 
-using namespace Eigen;
-
 namespace g2o {
 namespace deprecated {
 

@@ -30,7 +30,6 @@
 
 namespace g2o {
   using namespace std;
-  using namespace Eigen;
 
   SensorPose3D::SensorPose3D(const std::string& name_): BinarySensor<Robot3D, EdgeSE3, WorldObjectSE3>(name_){  
     _stepsToIgnore = 10;

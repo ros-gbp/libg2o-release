@@ -1,14 +1,16 @@
-IF(CHOLMOD_INCLUDE_DIR OR CSPARSE_INCLUDE_DIR)
-  ADD_EXECUTABLE(sba_demo sba_demo.cpp)
-  TARGET_LINK_LIBRARIES(sba_demo core types_icp types_sba)
-  SET_TARGET_PROPERTIES(sba_demo PROPERTIES OUTPUT_NAME sba_demo${EXE_POSTFIX})
-ENDIF()
+ADD_EXECUTABLE(sba_demo
+  sba_demo.cpp
+)
+
+SET_TARGET_PROPERTIES(sba_demo PROPERTIES OUTPUT_NAME sba_demo${EXE_POSTFIX})
 
 # Link CHOLMOD if available, CSparse otherwise
 IF(CHOLMOD_FOUND)
   INCLUDE_DIRECTORIES(${CHOLMOD_INCLUDE_DIR})
   TARGET_LINK_LIBRARIES(sba_demo solver_cholmod)
-ELSEIF(CSPARSE_FOUND)
+ELSE()
   INCLUDE_DIRECTORIES(${CSPARSE_INCLUDE_DIR})
   TARGET_LINK_LIBRARIES(sba_demo solver_csparse)
 ENDIF()
+
+TARGET_LINK_LIBRARIES(sba_demo core types_icp types_sba)

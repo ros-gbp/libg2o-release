@@ -55,17 +55,17 @@ namespace g2o {
        * update the offset to a new value.
        * re-calculates the different representations, e.g., the rotation matrix
        */
-      void setOffset(const Isometry3D& offset_=Isometry3D::Identity());
+      void setOffset(const Eigen::Isometry3d& offset_=Eigen::Isometry3d::Identity());
 
       //! rotation of the offset as 3x3 rotation matrix
-      const Isometry3D& offset() const { return _offset;}
+      const Eigen::Isometry3d& offset() const { return _offset;}
 
       //! rotation of the inverse offset as 3x3 rotation matrix
-      const Isometry3D& inverseOffset() const { return _inverseOffset;}
+      const Eigen::Isometry3d& inverseOffset() const { return _inverseOffset;}
 
     protected:
-      Isometry3D _offset;
-      Isometry3D _inverseOffset;
+      Eigen::Isometry3d _offset;
+      Eigen::Isometry3d _inverseOffset;
   };
 
   /**
@@ -80,15 +80,15 @@ namespace g2o {
       const ParameterSE3Offset* offsetParam() const { return _offsetParam;}
       void setOffsetParam(ParameterSE3Offset* offsetParam);
 
-      const Isometry3D& w2n() const { return _w2n;}
-      const Isometry3D& n2w() const { return _n2w;}
-      const Isometry3D& w2l() const { return _w2l;}
+      const Eigen::Isometry3d& w2n() const { return _w2n;}
+      const Eigen::Isometry3d& n2w() const { return _n2w;}
+      const Eigen::Isometry3d& w2l() const { return _w2l;}
 
     protected:
       ParameterSE3Offset* _offsetParam; ///< the parameter connected to the cache
-      Isometry3D _w2n;
-      Isometry3D _n2w;
-      Isometry3D _w2l;
+      Eigen::Isometry3d _w2n;
+      Eigen::Isometry3d _n2w;
+      Eigen::Isometry3d _w2l;
 
     protected:
       virtual bool resolveDependancies();

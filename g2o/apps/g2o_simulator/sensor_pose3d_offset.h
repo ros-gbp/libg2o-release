@@ -33,7 +33,6 @@ namespace g2o {
 
   class SensorPose3DOffset : public PointSensorParameters, public BinarySensor<Robot3D, EdgeSE3Offset, WorldObjectSE3>  { 
   public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     SensorPose3DOffset(const std::string& name_);
     virtual void sense();
     int stepsToIgnore() const {return _stepsToIgnore;}

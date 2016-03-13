@@ -30,7 +30,6 @@
 
 namespace g2o {
   using namespace std;
-  using namespace Eigen;
 
   SensorPose3DOffset::SensorPose3DOffset(const std::string& name_): 
     BinarySensor<Robot3D, EdgeSE3Offset, WorldObjectSE3>(name_){  

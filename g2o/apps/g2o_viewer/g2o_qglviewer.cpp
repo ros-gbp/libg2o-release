@@ -21,15 +21,6 @@
 #include "g2o/core/sparse_optimizer.h"
 #include "g2o/core/hyper_graph_action.h"
 
-// some macro helpers for identifying the version number of QGLViewer
-// QGLViewer changed some parts of its API in version 2.6.
-// The following preprocessor hack accounts for this. THIS SUCKS!!!
-#if (((QGLVIEWER_VERSION & 0xff0000) >> 16) >= 2 && ((QGLVIEWER_VERSION & 0x00ff00) >> 8) >= 6)
-#define qglv_real qreal
-#else
-#define qglv_real float
-#endif
-
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #else
@@ -52,17 +43,17 @@ namespace {
     public:
       StandardCamera() : _standard(true) {};
 
-      qglv_real zNear() const {
+      float zNear() const {
         if (_standard) 
-          return qglv_real(0.001);
+          return 0.001f; 
         else 
           return Camera::zNear(); 
       }
 
-      qglv_real zFar() const
+      float zFar() const
       {  
         if (_standard) 
-          return qglv_real(10000.0);
+          return 10000.0f; 
         else 
           return Camera::zFar();
       }

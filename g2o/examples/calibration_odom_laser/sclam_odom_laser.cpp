@@ -50,7 +50,6 @@
 
 using namespace std;
 using namespace g2o;
-using namespace Eigen;
 
 static bool hasToStop = false;
 

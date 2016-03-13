@@ -41,6 +41,7 @@
 #include "g2o/config.h"
 
 namespace g2o {
+  using namespace Eigen;
 /**
  * \brief Sparse matrix which uses blocks
  *
@@ -57,7 +58,7 @@ namespace g2o {
  * block sizes than you have to use a dynamic-block matrix (default
  * template argument).  
  */
-template <class MatrixType = MatrixXD >
+template <class MatrixType = MatrixXd >
 class SparseBlockMatrix {
 
   public:
@@ -221,7 +222,7 @@ class SparseBlockMatrix {
 template < class  MatrixType >
 std::ostream& operator << (std::ostream&, const SparseBlockMatrix<MatrixType>& m);
 
-  typedef SparseBlockMatrix<MatrixXD> SparseBlockMatrixXd;   
+  typedef SparseBlockMatrix<MatrixXd> SparseBlockMatrixXd;   
 
 } //end namespace
 

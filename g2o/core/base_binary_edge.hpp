@@ -26,21 +26,12 @@
 
 template <int D, typename E, typename VertexXiType, typename VertexXjType>
 OptimizableGraph::Vertex* BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::createFrom(){
-  return createVertex(0);
+  return new VertexXiType();
 }
 
 template <int D, typename E, typename VertexXiType, typename VertexXjType>
 OptimizableGraph::Vertex* BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::createTo(){
-  return createVertex(1);
-}
-
-template <int D, typename E, typename VertexXiType, typename VertexXjType>
-OptimizableGraph::Vertex* BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::createVertex(int i){
-  switch(i) {
-  case 0: return new VertexXiType();
-  case 1: return new VertexXjType();
-  default: return 0;
-  }
+  return new VertexXjType();
 }
 
 
@@ -80,10 +71,10 @@ void BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::constructQuadraticForm()
     to->lockQuadraticForm();
 #endif
     const InformationType& omega = _information;
-    Eigen::Matrix<double, D, 1, Eigen::ColMajor> omega_r = - omega * _error;
+    Matrix<double, D, 1> omega_r = - omega * _error;
     if (this->robustKernel() == 0) {
       if (fromNotFixed) {
-        Eigen::Matrix<double, VertexXiType::Dimension, D, Eigen::ColMajor> AtO = A.transpose() * omega;
+        Matrix<double, VertexXiType::Dimension, D> AtO = A.transpose() * omega;
         from->b().noalias() += A.transpose() * omega_r;
         from->A().noalias() += AtO*A;
         if (toNotFixed ) {
@@ -99,7 +90,7 @@ void BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::constructQuadraticForm()
       }
     } else { // robust (weighted) error according to some kernel
       double error = this->chi2();
-      Vector3D rho;
+      Eigen::Vector3d rho;
       this->robustKernel()->robustify(error, rho);
       InformationType weightedOmega = this->robustInformation(rho);
       //std::cout << PVAR(rho.transpose()) << std::endl;

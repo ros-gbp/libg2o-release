@@ -48,8 +48,6 @@
     s = new DIM_TO_SOLVER(p, l)(linearSolver); \
   } else (void)0
 
-using namespace std;
-
 namespace g2o {
 
   static OptimizationAlgorithm* createSolver(const std::string& fullSolverName)

@@ -34,6 +34,8 @@
 
 namespace g2o {
   
+  using namespace Eigen;
+
   class G2O_INTERACTIVE_API OnlineVertexSE3 : public VertexSE3
   {
     public:
@@ -48,7 +50,7 @@ namespace g2o {
 
       void oplusUpdatedEstimate(double* update)
       {
-        Eigen::Map<const Vector6d> v(update);
+        Map<const Vector6d> v(update);
         Eigen::Isometry3d increment = internal::fromVectorMQT(v);
         updatedEstimate = _estimate * increment;
       }

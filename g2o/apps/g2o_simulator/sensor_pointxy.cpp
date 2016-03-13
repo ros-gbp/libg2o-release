@@ -26,8 +26,6 @@
 
 #include "sensor_pointxy.h"
 
-using namespace Eigen;
-
 namespace g2o{
 
   SensorPointXY::SensorPointXY(const std::string& name_): BinarySensor<Robot2D, EdgeSE2PointXY, WorldObjectPointXY>(name_) {}

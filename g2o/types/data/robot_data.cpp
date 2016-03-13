@@ -29,7 +29,7 @@
 namespace g2o {
 
   RobotData::RobotData() :
-    HyperGraph::Data(),
+    OptimizableGraph::Data(),
     _timestamp(-1.), _loggerTimestamp(-1.)
   {
   }

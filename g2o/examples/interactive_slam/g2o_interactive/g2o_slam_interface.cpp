@@ -36,7 +36,6 @@
 
 #include <iostream>
 using namespace std;
-using namespace Eigen;
 
 namespace g2o {
 

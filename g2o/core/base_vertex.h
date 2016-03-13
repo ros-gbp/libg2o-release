@@ -39,6 +39,9 @@
 
 namespace g2o {
 
+  using namespace Eigen;
+
+
 /**
  * \brief Templatized BaseVertex
  *
@@ -56,7 +59,7 @@ namespace g2o {
 
     static const int Dimension = D;           ///< dimension of the estimate (minimal) in the manifold space
 
-    typedef Eigen::Map<Eigen::Matrix<double, D, D, Eigen::ColMajor>, Eigen::Matrix<double, D, D, Eigen::ColMajor>::Flags & Eigen::AlignedBit ? Eigen::Aligned : Eigen::Unaligned >  HessianBlockType;
+    typedef Map<Matrix<double, D, D>, Matrix<double,D,D>::Flags & AlignedBit ? Aligned : Unaligned >  HessianBlockType;
 
   public:
     BaseVertex();
@@ -84,8 +87,8 @@ namespace g2o {
     virtual double solveDirect(double lambda=0);
 
     //! return right hand side b of the constructed linear system
-    Eigen::Matrix<double, D, 1, Eigen::ColMajor>& b() { return _b;}
-    const Eigen::Matrix<double, D, 1, Eigen::ColMajor>& b() const { return _b;}
+    Matrix<double, D, 1>& b() { return _b;}
+    const Matrix<double, D, 1>& b() const { return _b;}
     //! return the hessian block associated with the vertex
     HessianBlockType& A() { return _hessian;}
     const HessianBlockType& A() const { return _hessian;}
@@ -102,7 +105,7 @@ namespace g2o {
 
   protected:
     HessianBlockType _hessian;
-    Eigen::Matrix<double, D, 1, Eigen::ColMajor> _b;
+    Matrix<double, D, 1> _b;
     EstimateType _estimate;
     BackupStackType _backup;
   public:

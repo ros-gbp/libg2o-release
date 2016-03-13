@@ -40,7 +40,7 @@ namespace g2o {
       virtual bool initSolver(int dimension, int batchEveryN);
 
     protected:
-      SparseBlockMatrix<Eigen::MatrixXd> _updateMat;
+      SparseBlockMatrix<MatrixXd> _updateMat;
       cholmod_common _cholmodCommon;
       CholmodExt* _cholmodSparse;
       cholmod_factor* _cholmodFactor;

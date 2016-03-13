@@ -34,15 +34,14 @@
 
 using namespace std;
 using namespace g2o;
-using namespace Eigen;
 
-Isometry3D randomIsometry3d()
+Eigen::Isometry3d randomIsometry3d()
 {
-  Vector3D rotAxisAngle = Vector3D::Random();
-  rotAxisAngle += Vector3D::Random();
+  Eigen::Vector3d rotAxisAngle = Vector3d::Random();
+  rotAxisAngle += Vector3d::Random();
   Eigen::AngleAxisd rotation(rotAxisAngle.norm(), rotAxisAngle.normalized());
-  Isometry3D result = (Isometry3D)rotation.toRotationMatrix();
-  result.translation() = Vector3D::Random();
+  Eigen::Isometry3d result = (Eigen::Isometry3d)rotation.toRotationMatrix();
+  result.translation() = Vector3d::Random();
   return result;
 }
 
@@ -54,7 +53,7 @@ int main(int , char** )
     offsetParam->setId(0);
     graph.addParameter(offsetParam);
 
-    Isometry3D zeroPose = Isometry3D::Identity();
+    Eigen::Isometry3d zeroPose = Eigen::Isometry3d::Identity();
     VertexSE3* v1 = new VertexSE3;
     v1->setId(0);
     graph.addVertex(v1);
@@ -66,7 +65,7 @@ int main(int , char** )
     cout << PVAR(priorEdge->measurement().matrix()) << endl;
     graph.addEdge(priorEdge);
 
-    Eigen::Matrix<double,6,6,Eigen::ColMajor> information = Eigen::Matrix<double,6,6,Eigen::ColMajor>::Identity();
+    Eigen::Matrix<double,6,6> information = Eigen::Matrix<double,6,6>::Identity();
 
     cout << "Full information" << endl;
     v1->setEstimate(zeroPose);
@@ -78,8 +77,8 @@ int main(int , char** )
 
     cout << "Only translation" << endl;
     v1->setEstimate(zeroPose);
-    information.block<3,3>(0,0) = Matrix3D::Identity();
-    information.block<3,3>(3,3) = Matrix3D::Zero();
+    information.block<3,3>(0,0) = Eigen::Matrix3d::Identity();
+    information.block<3,3>(3,3) = Eigen::Matrix3d::Zero();
     priorEdge->setInformation(information);
     priorEdge->initialEstimate(auxSet, 0);
     cout << PVAR(priorEdge->chi2()) << endl;
@@ -88,8 +87,8 @@ int main(int , char** )
 
     cout << "Only rotation" << endl;
     v1->setEstimate(zeroPose);
-    information.block<3,3>(0,0) = Matrix3D::Zero();
-    information.block<3,3>(3,3) = Matrix3D::Identity();
+    information.block<3,3>(0,0) = Eigen::Matrix3d::Zero();
+    information.block<3,3>(3,3) = Eigen::Matrix3d::Identity();
     priorEdge->setInformation(information);
     priorEdge->initialEstimate(auxSet, 0);
     cout << PVAR(priorEdge->chi2()) << endl;
@@ -107,7 +106,7 @@ int main(int , char** )
   EdgeSE3 e;
   e.setVertex(0, &v1);
   e.setVertex(1, &v2);
-  e.setInformation(Eigen::Matrix<double,6,6,Eigen::ColMajor>::Identity());
+  e.setInformation(Eigen::Matrix<double,6,6>::Identity());
 
   JacobianWorkspace jacobianWorkspace;
   JacobianWorkspace numericJacobianWorkspace;
@@ -121,12 +120,12 @@ int main(int , char** )
     e.setMeasurement(randomIsometry3d());
 
     // calling the analytic Jacobian but writing to the numeric workspace
-    e.BaseBinaryEdge<6, Isometry3D, VertexSE3, VertexSE3>::linearizeOplus(numericJacobianWorkspace);
+    e.BaseBinaryEdge<6, Eigen::Isometry3d, VertexSE3, VertexSE3>::linearizeOplus(numericJacobianWorkspace);
     // copy result into analytic workspace
     jacobianWorkspace = numericJacobianWorkspace;
 
     // compute the numeric Jacobian into the numericJacobianWorkspace workspace as setup by the previous call
-    e.BaseBinaryEdge<6, Isometry3D, VertexSE3, VertexSE3>::linearizeOplus();
+    e.BaseBinaryEdge<6, Eigen::Isometry3d, VertexSE3, VertexSE3>::linearizeOplus();
 
     // compare the two Jacobians
     const double allowedDifference = 1e-6;

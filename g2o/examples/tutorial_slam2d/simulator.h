@@ -38,6 +38,8 @@
 namespace g2o {
   namespace tutorial {
 
+    using namespace Eigen;
+
     class G2O_TUTORIAL_SLAM2D_API Simulator {
       public:
 
@@ -53,8 +55,8 @@ namespace g2o {
         {
           EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
           int id;
-          Eigen::Vector2d truePose;
-          Eigen::Vector2d simulatedPose;
+          Vector2d truePose;
+          Vector2d simulatedPose;
           std::vector<int> seenBy;
           Landmark() : id(-1) {}
         };
@@ -83,7 +85,7 @@ namespace g2o {
           int to;
           SE2 trueTransf;
           SE2 simulatorTransf;
-          Eigen::Matrix3d information;
+          Matrix3d information;
           EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
         };
         typedef std::vector<GridEdge, Eigen::aligned_allocator<GridEdge> >  GridEdgeVector;
@@ -92,9 +94,9 @@ namespace g2o {
         {
           int from;
           int to;
-          Eigen::Vector2d trueMeas;
-          Eigen::Vector2d simulatorMeas;
-          Eigen::Matrix2d information;
+          Vector2d trueMeas;
+          Vector2d simulatorMeas;
+          Matrix2d information;
           EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
         };
         typedef std::vector<LandmarkEdge, Eigen::aligned_allocator<LandmarkEdge> >  LandmarkEdgeVector;
@@ -116,9 +118,9 @@ namespace g2o {
         GridEdgeVector _odometry;
         LandmarkEdgeVector _landmarkObservations;
 
-        GridPose generateNewPose(const GridPose& prev, const SE2& trueMotion, const Eigen::Vector2d& transNoise, double rotNoise);
+        GridPose generateNewPose(const GridPose& prev, const SE2& trueMotion, const Vector2d& transNoise, double rotNoise);
         SE2 getMotion(int motionDirection, double stepLen);
-        SE2 sampleTransformation(const SE2& trueMotion_, const Eigen::Vector2d& transNoise, double rotNoise);
+        SE2 sampleTransformation(const SE2& trueMotion_, const Vector2d& transNoise, double rotNoise);
     };
 
   } // end namespace

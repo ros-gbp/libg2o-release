@@ -67,7 +67,7 @@ namespace g2o {
         int n = A.cols();
         int m = A.cols();
 
-        MatrixXD& H = _H;
+        Eigen::MatrixXd& H = _H;
         if (H.cols() != n) {
           H.resize(n, m);
           _reset = true;
@@ -102,8 +102,8 @@ namespace g2o {
         }
 
         // solving via Cholesky decomposition
-        VectorXD::MapType xvec(x, m);
-        VectorXD::ConstMapType bvec(b, n);
+        Eigen::VectorXd::MapType xvec(x, m);
+        Eigen::VectorXd::ConstMapType bvec(b, n);
         _cholesky.compute(H);
         if (_cholesky.isPositive()) {
           xvec = _cholesky.solve(bvec);
@@ -114,8 +114,8 @@ namespace g2o {
 
     protected:
       bool _reset;
-      MatrixXD _H;
-      Eigen::LDLT<MatrixXD> _cholesky;
+      Eigen::MatrixXd _H;
+      Eigen::LDLT<Eigen::MatrixXd> _cholesky;
 
   };
 

@@ -36,6 +36,7 @@
 #include <Eigen/Geometry>
 
 namespace g2o {
+  using namespace Eigen;
 
   namespace tutorial {
 
@@ -46,13 +47,13 @@ namespace g2o {
 
         SE2(double x, double y, double theta):_R(theta),_t(x,y){}
 
-        const Eigen::Vector2d& translation() const {return _t;}
+        const Vector2d& translation() const {return _t;}
 
-        Eigen::Vector2d& translation() {return _t;}
+        Vector2d& translation() {return _t;}
 
-        const Eigen::Rotation2Dd& rotation() const {return _R;}
+        const Rotation2Dd& rotation() const {return _R;}
 
-        Eigen::Rotation2Dd& rotation() {return _R;}
+        Rotation2Dd& rotation() {return _R;}
 
         SE2 operator * (const SE2& tr2) const{
           SE2 result(*this);
@@ -69,7 +70,7 @@ namespace g2o {
           return *this;
         }
 
-        Eigen::Vector2d operator * (const Eigen::Vector2d& v) const {
+        Vector2d operator * (const Vector2d& v) const {
           return _t+_R*v;
         }
 
@@ -77,7 +78,7 @@ namespace g2o {
           SE2 ret;
           ret._R=_R.inverse();
           ret._R.angle()=normalize_theta(ret._R.angle());
-          ret._t=ret._R*(Eigen::Vector2d(-1 * _t));
+          ret._t=ret._R*(Vector2d(-1 * _t));
           return ret;
         }
 
@@ -95,12 +96,12 @@ namespace g2o {
           return _R.angle();
         }
 
-        void fromVector (const Eigen::Vector3d& v){
+        void fromVector (const Vector3d& v){
           *this=SE2(v[0], v[1], v[2]);
         }
 
-        Eigen::Vector3d toVector() const {
-          Eigen::Vector3d ret;
+        Vector3d toVector() const {
+          Vector3d ret;
           for (int i=0; i<3; i++){
             ret(i)=(*this)[i];
           }
@@ -108,8 +109,8 @@ namespace g2o {
         }
 
       protected:
-        Eigen::Rotation2Dd _R;
-        Eigen::Vector2d _t;
+        Rotation2Dd _R;
+        Vector2d _t;
     };
 
   } // end namespace

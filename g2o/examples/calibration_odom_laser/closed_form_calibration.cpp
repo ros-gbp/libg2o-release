@@ -36,8 +36,6 @@
 #define SQR(X)		( std::pow(X,2) )
 #define CUBE(X)		( std::pow(X,3) )
 
-using namespace Eigen;
-
 namespace g2o {
 
 bool ClosedFormCalibration::calibrate(const MotionInformationVector& measurements, SE2& laserOffset, Eigen::Vector3d& odomParams)

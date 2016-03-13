@@ -35,6 +35,7 @@
 #include "g2o/config.h"
 
 namespace g2o {
+  using namespace Eigen;
 
   /**
    * \brief traits to summarize the properties of the fixed size optimization problem
@@ -44,11 +45,11 @@ namespace g2o {
   {
     static const int PoseDim = _PoseDim;
     static const int LandmarkDim = _LandmarkDim;
-    typedef Eigen::Matrix<double, PoseDim, PoseDim, Eigen::ColMajor> PoseMatrixType;
-    typedef Eigen::Matrix<double, LandmarkDim, LandmarkDim, Eigen::ColMajor> LandmarkMatrixType;
-    typedef Eigen::Matrix<double, PoseDim, LandmarkDim, Eigen::ColMajor> PoseLandmarkMatrixType;
-    typedef Eigen::Matrix<double, PoseDim, 1, Eigen::ColMajor> PoseVectorType;
-    typedef Eigen::Matrix<double, LandmarkDim, 1, Eigen::ColMajor> LandmarkVectorType;
+    typedef Matrix<double, PoseDim, PoseDim> PoseMatrixType;
+    typedef Matrix<double, LandmarkDim, LandmarkDim> LandmarkMatrixType;
+    typedef Matrix<double, PoseDim, LandmarkDim> PoseLandmarkMatrixType;
+    typedef Matrix<double, PoseDim, 1> PoseVectorType;
+    typedef Matrix<double, LandmarkDim, 1> LandmarkVectorType;
 
     typedef SparseBlockMatrix<PoseMatrixType> PoseHessianType;
     typedef SparseBlockMatrix<LandmarkMatrixType> LandmarkHessianType;
@@ -64,11 +65,11 @@ namespace g2o {
   {
     static const int PoseDim = Eigen::Dynamic;
     static const int LandmarkDim = Eigen::Dynamic;
-    typedef MatrixXD PoseMatrixType;
-    typedef MatrixXD LandmarkMatrixType;
-    typedef MatrixXD PoseLandmarkMatrixType;
-    typedef VectorXD PoseVectorType;
-    typedef VectorXD LandmarkVectorType;
+    typedef MatrixXd PoseMatrixType;
+    typedef MatrixXd LandmarkMatrixType;
+    typedef MatrixXd PoseLandmarkMatrixType;
+    typedef VectorXd PoseVectorType;
+    typedef VectorXd LandmarkVectorType;
 
     typedef SparseBlockMatrix<PoseMatrixType> PoseHessianType;
     typedef SparseBlockMatrix<LandmarkMatrixType> LandmarkHessianType;
@@ -124,7 +125,7 @@ namespace g2o {
       virtual bool updateStructure(const std::vector<HyperGraph::Vertex*>& vset, const HyperGraph::EdgeSet& edges);
       virtual bool buildSystem();
       virtual bool solve();
-      virtual bool computeMarginals(SparseBlockMatrix<MatrixXD>& spinv, const std::vector<std::pair<int, int> >& blockIndices);
+      virtual bool computeMarginals(SparseBlockMatrix<MatrixXd>& spinv, const std::vector<std::pair<int, int> >& blockIndices);
       virtual bool setLambda(double lambda, bool backup = false);
       virtual void restoreDiagonal();
       virtual bool supportsSchur() {return true;}

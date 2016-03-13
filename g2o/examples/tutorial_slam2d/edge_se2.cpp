@@ -26,8 +26,6 @@
 
 #include "edge_se2.h"
 
-using namespace Eigen;
-
 namespace g2o {
   namespace tutorial {
 

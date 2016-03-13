@@ -28,7 +28,6 @@
 
 #ifdef G2O_HAVE_OPENGL
 #include "g2o/stuff/opengl_wrapper.h"
-#include "g2o/stuff/opengl_primitives.h"
 #endif
 
 namespace g2o {
@@ -49,7 +48,7 @@ namespace g2o {
     VertexPointXY* l2 = static_cast<VertexPointXY*>(_vertices[1]);
     SE2 t=v1->estimate();
     t.setRotation(t.rotation().angle()+_measurement);
-    Vector2D vr;
+    Vector2d vr;
     vr[0]=r; vr[1]=0;
     l2->setEstimate(t*vr);
   }
@@ -104,33 +103,13 @@ namespace g2o {
       return this;
 
     EdgeSE2PointXYBearing* e =  static_cast<EdgeSE2PointXYBearing*>(element);
-    VertexSE2* from = static_cast<VertexSE2*>(e->vertex(0));
-    VertexPointXY* to   = static_cast<VertexPointXY*>(e->vertex(1));
-    if (! from)
-      return this;
-    double guessRange=5;
-    double theta = e->measurement();
-    Vector2D p(cos(theta)*guessRange, sin(theta)*guessRange);
-    glPushAttrib(GL_ENABLE_BIT|GL_LIGHTING|GL_COLOR);
-    glDisable(GL_LIGHTING);
-    if (!to){
-      p=from->estimate()*p;
-      glColor3f(LANDMARK_EDGE_GHOST_COLOR);
-      glPushAttrib(GL_POINT_SIZE);
-      glPointSize(3);
-      glBegin(GL_POINTS);
-      glVertex3f((float)p.x(),(float)p.y(),0.f);
-      glEnd();
-      glPopAttrib();
-    } else {
-      p=to->estimate();
-      glColor3f(LANDMARK_EDGE_COLOR);
-    }
+    VertexSE2* fromEdge = static_cast<VertexSE2*>(e->vertex(0));
+    VertexPointXY* toEdge   = static_cast<VertexPointXY*>(e->vertex(1));
+    glColor3f(0.3f,0.3f,0.1f);
     glBegin(GL_LINES);
-    glVertex3f((float)from->estimate().translation().x(),(float)from->estimate().translation().y(),0.f);
-    glVertex3f((float)p.x(),(float)p.y(),0.f);
+    glVertex3f((float)fromEdge->estimate().translation().x(),(float)fromEdge->estimate().translation().y(),0.f);
+    glVertex3f((float)toEdge->estimate().x(),(float)toEdge->estimate().y(),0.f);
     glEnd();
-    glPopAttrib();
     return this;
   }
 #endif

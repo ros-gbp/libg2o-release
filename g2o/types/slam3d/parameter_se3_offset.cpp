@@ -30,7 +30,6 @@
 
 #ifdef G2O_HAVE_OPENGL
 #include "g2o/stuff/opengl_wrapper.h"
-#include "g2o/stuff/opengl_primitives.h"
 #endif
 
 namespace g2o {
@@ -39,7 +38,7 @@ namespace g2o {
     setOffset();
   }
 
-  void ParameterSE3Offset::setOffset(const Isometry3D& offset_){
+  void ParameterSE3Offset::setOffset(const Isometry3d& offset_){
     _offset = offset_;
     _inverseOffset = _offset.inverse();
   }
@@ -50,7 +49,7 @@ namespace g2o {
       is >> off[i];
     }
     // normalize the quaternion to recover numerical precision lost by storing as human readable text
-    Vector4D::MapType(off.data()+3).normalize();
+    Vector4d::MapType(off.data()+3).normalize();
     setOffset(internal::fromVectorQT(off));
     return is.good();
   }
@@ -104,24 +103,23 @@ namespace g2o {
   }
 
   HyperGraphElementAction* CacheSE3OffsetDrawAction::operator()(HyperGraph::HyperGraphElement* element, 
-                HyperGraphElementAction::Parameters* params_){
+                HyperGraphElementAction::Parameters* params){
     if (typeid(*element).name()!=_typeName)
       return 0;
-    CacheSE3Offset* that = static_cast<CacheSE3Offset*>(element);
-    refreshPropertyPtrs(params_);
+    refreshPropertyPtrs(params);
     if (! _previousParams)
       return this;
     
     if (_show && !_show->value())
       return this;
-    float cs = _cubeSide ? _cubeSide->value() : 1.0f;
-    glPushAttrib(GL_COLOR);
-    glColor3f(POSE_PARAMETER_COLOR);
-    glPushMatrix();
-    glMultMatrixd(that->offsetParam()->offset().data());
-    opengl::drawBox(cs,cs,cs);
-    glPopMatrix();
-    glPopAttrib();
+
+    //CacheSE3Offset* that = static_cast<CacheSE3Offset*>(element);
+    //glPushMatrix();
+    //glMultMatrixd(that->offsetParam()->offset().matrix().data());
+    // if (_cubeSide)
+    //   drawMyPyramid(_cubeSide->value(), _cubeSide->value());
+    //glPopMatrix();
+
     return this;
   }
 #endif

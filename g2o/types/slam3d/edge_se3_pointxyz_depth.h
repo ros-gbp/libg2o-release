@@ -39,7 +39,7 @@ namespace g2o {
   /*! \class EdgeProjectDepth
    * \brief g2o edge from a track to a depth camera node using a depth measurement (true distance, not disparity)
    */
-  class G2O_TYPES_SLAM3D_API EdgeSE3PointXYZDepth : public BaseBinaryEdge<3, Vector3D, VertexSE3, VertexPointXYZ> {
+  class G2O_TYPES_SLAM3D_API EdgeSE3PointXYZDepth : public BaseBinaryEdge<3, Vector3d, VertexSE3, VertexPointXYZ> {
   public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     EdgeSE3PointXYZDepth();
@@ -52,18 +52,18 @@ namespace g2o {
     virtual void linearizeOplus();
     
 
-    virtual void setMeasurement(const Vector3D& m){
+    virtual void setMeasurement(const Vector3d& m){
       _measurement = m;
     }
 
     virtual bool setMeasurementData(const double* d){
-      Eigen::Map<const Vector3D> v(d);
+      Map<const Vector3d> v(d);
       _measurement = v;
       return true;
     }
 
     virtual bool getMeasurementData(double* d) const{
-      Eigen::Map<Vector3D> v(d);
+      Map<Vector3d> v(d);
       v=_measurement;
       return true;
     }
@@ -81,7 +81,7 @@ namespace g2o {
     virtual void initialEstimate(const OptimizableGraph::VertexSet& from, OptimizableGraph::Vertex* to);
 
   private:
-    Eigen::Matrix<double,3,9,Eigen::ColMajor> J; // jacobian before projection
+    Eigen::Matrix<double,3,9> J; // jacobian before projection
 
     virtual bool resolveCaches();
     ParameterCamera* params;

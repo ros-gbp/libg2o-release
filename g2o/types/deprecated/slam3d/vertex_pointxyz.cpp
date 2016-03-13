@@ -37,7 +37,7 @@ namespace deprecated {
   // TRACK VERTEX
 
   bool VertexPointXYZ::read(std::istream& is) {
-    Eigen::Vector3d lv;
+    Vector3d lv;
     for (int i=0; i<3; i++)
       is >> lv[i];
     setEstimate(lv);
@@ -45,7 +45,7 @@ namespace deprecated {
   }
 
   bool VertexPointXYZ::write(std::ostream& os) const {
-    const Eigen::Vector3d& lv = estimate();
+    const Vector3d& lv = estimate();
     for (int i=0; i<3; i++){
       os << lv[i] << " ";
     }

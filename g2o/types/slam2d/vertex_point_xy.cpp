@@ -28,7 +28,6 @@
 
 #ifdef G2O_HAVE_OPENGL
 #include "g2o/stuff/opengl_wrapper.h"
-#include "g2o/stuff/opengl_primitives.h"
 #endif
 
 #include <typeinfo>
@@ -38,7 +37,7 @@
 namespace g2o {
 
   VertexPointXY::VertexPointXY() :
-    BaseVertex<2, Vector2D>()
+    BaseVertex<2, Vector2d>()
   {
     _estimate.setZero();
   }
@@ -87,30 +86,27 @@ namespace g2o {
   }
 
   HyperGraphElementAction* VertexPointXYDrawAction::operator()(HyperGraph::HyperGraphElement* element, 
-                     HyperGraphElementAction::Parameters* params ){
+                     HyperGraphElementAction::Parameters* params_ ){
 
     if (typeid(*element).name()!=_typeName)
       return 0;
-    initializeDrawActionsCache();
-    refreshPropertyPtrs(params);
+
+    refreshPropertyPtrs(params_);
     if (! _previousParams)
       return this;
 
     if (_show && !_show->value())
       return this;
-    VertexPointXY* that = static_cast<VertexPointXY*>(element);
+    
 
-    glPushMatrix();
-    glPushAttrib(GL_ENABLE_BIT | GL_POINT_BIT);
-    glDisable(GL_LIGHTING);
-    glColor3f(LANDMARK_VERTEX_COLOR);
-    float ps = _pointSize ? _pointSize->value() :  1.0f;
-    glTranslatef((float)that->estimate()(0),(float)that->estimate()(1),0.0f);
-    opengl::drawPoint(ps);
-    glPopAttrib();
-    drawCache(that->cacheContainer(), params);
-    drawUserData(that->userData(), params);
-    glPopMatrix();
+    VertexPointXY* that = static_cast<VertexPointXY*>(element);
+    glColor3f(0.8f,0.5f,0.3f);
+    if (_pointSize) {
+      glPointSize(_pointSize->value());
+    }
+    glBegin(GL_POINTS);
+    glVertex3f((float)that->estimate().x(),(float)that->estimate().y(),0.f);
+    glEnd();
     return this;
   }
 #endif

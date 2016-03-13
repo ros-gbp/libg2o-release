@@ -34,7 +34,11 @@
 #include "g2o/config.h"
 #include "matrix_operations.h"
 
+#ifdef _MSC_VER
 #include <unordered_map>
+#else
+#include <tr1/unordered_map>
+#endif
 
 namespace g2o {
 
@@ -118,7 +122,7 @@ namespace g2o {
             const SparseMatrixBlock* a = it->block;
             int srcOffset = rowBaseOfBlock(it->row);
             // destVec += *a.transpose() * srcVec (according to the sub-vector parts)
-            internal::template atxpy<SparseMatrixBlock>(*a, srcVec, srcOffset, destVec, destOffset);
+            internal::atxpy(*a, srcVec, srcOffset, destVec, destOffset);
           }
         }
       }
@@ -219,7 +223,7 @@ namespace g2o {
       //! rows of the matrix
       int rows() const {return _rowBlockIndices.size() ? _rowBlockIndices.back() : 0;}
 
-      typedef std::unordered_map<int, MatrixType*> SparseColumn;
+      typedef std::tr1::unordered_map<int, MatrixType*> SparseColumn;
 
       SparseBlockMatrixHashMap(const std::vector<int>& rowIndices, const std::vector<int>& colIndices) :
         _rowBlockIndices(rowIndices), _colBlockIndices(colIndices)

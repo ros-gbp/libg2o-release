@@ -29,7 +29,6 @@
 
 namespace g2o {
   using namespace std;
-  using namespace Eigen;
 
   // SensorPointXYOffset
   SensorPointXYOffset::SensorPointXYOffset(const std::string& name_): BinarySensor<Robot2D, EdgeSE2PointXYOffset, WorldObjectPointXY>(name_) {

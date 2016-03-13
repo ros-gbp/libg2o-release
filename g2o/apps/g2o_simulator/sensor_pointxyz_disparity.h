@@ -35,7 +35,6 @@ namespace g2o {
 
   class G2O_SIMULATOR_API SensorPointXYZDisparity: public PointSensorParameters, public BinarySensor<Robot3D, EdgeSE3PointXYZDisparity, WorldObjectTrackXYZ>{
   public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
     typedef PoseVertexType::EstimateType RobotPoseType;
     SensorPointXYZDisparity(const std::string& name_);
     virtual void sense();

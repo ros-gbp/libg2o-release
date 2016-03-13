@@ -28,7 +28,6 @@
 #include <stdio.h>
 
 #ifdef G2O_HAVE_OPENGL
-#include "g2o/stuff/opengl_primitives.h"
 #include "g2o/stuff/opengl_wrapper.h"
 #endif
 
@@ -37,7 +36,7 @@
 namespace g2o {
 
   bool VertexPointXYZ::read(std::istream& is) {
-    Vector3D lv;
+    Vector3d lv;
     for (int i=0; i<3; i++)
       is >> lv[i];
     setEstimate(lv);
@@ -45,7 +44,7 @@ namespace g2o {
   }
 
   bool VertexPointXYZ::write(std::ostream& os) const {
-    Vector3D lv=estimate();
+    Vector3d lv=estimate();
     for (int i=0; i<3; i++){
       os << lv[i] << " ";
     }
@@ -74,7 +73,6 @@ namespace g2o {
 
     if (typeid(*element).name()!=_typeName)
       return 0;
-    initializeDrawActionsCache();
     refreshPropertyPtrs(params);
     if (! _previousParams)
       return this;
@@ -84,17 +82,16 @@ namespace g2o {
     VertexPointXYZ* that = static_cast<VertexPointXYZ*>(element);
     
 
-    glPushMatrix();
     glPushAttrib(GL_ENABLE_BIT | GL_POINT_BIT);
     glDisable(GL_LIGHTING);
-    glColor3f(LANDMARK_VERTEX_COLOR);
-    float ps = _pointSize ? _pointSize->value() :  1.f;
-    glTranslatef((float)that->estimate()(0),(float)that->estimate()(1),(float)that->estimate()(2));
-    opengl::drawPoint(ps);
+    glColor3f(0.8f,0.5f,0.3f);
+    if (_pointSize) {
+      glPointSize(_pointSize->value());
+    }
+    glBegin(GL_POINTS);
+    glVertex3f((float)that->estimate()(0),(float)that->estimate()(1),(float)that->estimate()(2));
+    glEnd();
     glPopAttrib();
-    drawCache(that->cacheContainer(), params);
-    drawUserData(that->userData(), params);
-    glPopMatrix();
     return this;
   }
 #endif

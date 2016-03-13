@@ -37,6 +37,7 @@
 
 namespace g2o {
 
+  using namespace Eigen;
 
   template <int D, typename E, typename VertexXi>
   class BaseUnaryEdge : public BaseEdge<D,E>
@@ -45,7 +46,7 @@ namespace g2o {
       static const int Dimension = BaseEdge<D, E>::Dimension;
       typedef typename BaseEdge<D,E>::Measurement Measurement;
       typedef VertexXi VertexXiType;
-      typedef typename Eigen::Matrix<double, D, VertexXiType::Dimension, D==1?Eigen::RowMajor:Eigen::ColMajor>::AlignedMapType JacobianXiOplusType;
+      typedef typename Matrix<double, D, VertexXiType::Dimension>::AlignedMapType JacobianXiOplusType;
       typedef typename BaseEdge<D,E>::ErrorVector ErrorVector;
       typedef typename BaseEdge<D,E>::InformationType InformationType;
 
@@ -60,8 +61,6 @@ namespace g2o {
       virtual bool allVerticesFixed() const;
 
       virtual void linearizeOplus(JacobianWorkspace& jacobianWorkspace);
-
-      virtual OptimizableGraph::Vertex* createVertex(int i);
 
       /**
        * Linearizes the oplus operator in the vertex, and stores

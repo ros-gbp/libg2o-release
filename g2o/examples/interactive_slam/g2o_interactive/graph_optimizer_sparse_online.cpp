@@ -42,7 +42,6 @@
 #include <iomanip>
 #include <fstream>
 using namespace std;
-using namespace Eigen;
 
 #define DIM_TO_SOLVER(p, l) BlockSolver< BlockSolverTraits<p, l> >
 

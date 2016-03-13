@@ -61,7 +61,6 @@ static bool hasToStop=false;
 
 using namespace std;
 using namespace g2o;
-using namespace Eigen;
 
 // sort according to max id, dimension
 struct IncrementalEdgesCompare {

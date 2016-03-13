@@ -6,8 +6,6 @@
 
 namespace g2o {
 
-  class SparseOptimizer;
-
   /**
    * \brief stop iterating based on the gain which is (oldChi - currentChi) / currentChi.
    *
@@ -33,8 +31,6 @@ namespace g2o {
       double _lastChi;
       bool _auxTerminateFlag;
       int _maxIterations;
-
-      void setOptimizerStopFlag(const SparseOptimizer* optimizer, bool stop);
   };
 
 } // end namespace
