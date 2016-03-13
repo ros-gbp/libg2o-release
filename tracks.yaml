@@ -49,10 +49,10 @@ tracks:
     - git-bloom-generate -y rosdebian --prefix release/:{ros_distro} :{ros_distro}
       -i :{release_inc}
     devel_branch: null
-    last_version: 2014.02.18
+    last_version: 2014.2.18
     name: upstream
     patches: indigo
-    release_inc: '1'
+    release_inc: '0'
     release_repo_url: null
     release_tag: :{ask}
     ros_distro: indigo
