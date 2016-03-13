@@ -1,7 +1,7 @@
-From 3ee01a7dc59893b7de9a0356a4d85e4f83ebee20 Mon Sep 17 00:00:00 2001
+From eb40abb3165415aaefa476972c56be2d511866cf Mon Sep 17 00:00:00 2001
 From: Vincent Rabaud <vrabaud@willowgarage.com>
 Date: Sat, 27 Jul 2013 16:58:44 +0000
-Subject: [PATCH 2/2] remove march for potential build farm problems
+Subject: [PATCH 2/3] remove march for potential build farm problems
 
 ---
  CMakeLists.txt | 4 ----
@@ -23,5 +23,5 @@ index 67b7298..a96551e 100644
    SET(g2o_C_FLAGS "${g2o_C_FLAGS} -Wall -W")
    SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -Wall -W")
 -- 
-1.9.1
+2.5.0
 
