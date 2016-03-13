@@ -1,0 +1,12 @@
+Source: ros-indigo-libg2o
+Section: misc
+Priority: extra
+Maintainer: Vincent Rabaud <vincent.rabaud@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), cmake, libboost-all-dev, libeigen3-dev, libgl1-mesa-dev, libglu1-mesa-dev, libsuitesparse-dev
+Homepage: https://github.com/RainerKuemmerle/g2o
+Standards-Version: 3.9.2
+
+Package: ros-indigo-libg2o
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libboost-all-dev, libeigen3-dev, libgl1-mesa-dev, libglu1-mesa-dev, libsuitesparse-dev, ros-indigo-catkin
+Description: The libg2o library from http://openslam.org/g2o.html
