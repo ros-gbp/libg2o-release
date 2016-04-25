@@ -1,0 +1,30 @@
+From fd76e574b6fc2d950348b37f26d7c341c2937e74 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Christoph=20R=C3=B6smann?=
+ <christoph.roesmann@tu-dortmund.de>
+Date: Mon, 25 Apr 2016 21:46:41 +0200
+Subject: [PATCH 2/2] deal with non-standard CMAKE_BUILD_TYPE None
+
+---
+ CMakeLists.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 0f21a6c..b848286 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,6 +1,12 @@
+ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+ SET(CMAKE_LEGACY_CYGWIN_WIN32 0)
+ 
++# must go before the project command
++set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
++if(DEFINED CMAKE_BUILD_TYPE)
++  set_property( CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS ${CMAKE_CONFIGURATION_TYPES} )
++endif()
++
+ PROJECT(g2o)
+ 
+ # The library prefix
+-- 
+2.7.4
+
