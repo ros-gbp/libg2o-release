@@ -79,11 +79,22 @@ IF(WIN32)
     ADD_DEFINITIONS(-DNOMINMAX)
     ADD_DEFINITIONS(-D_USE_MATH_DEFINES)
     # SSE2 optimizations
-    ADD_DEFINITIONS("/arch:SSE2")
+    if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)  # No need to specify if building for x64 (actually, it generates an annoying warning)
+        ADD_DEFINITIONS("/arch:SSE2")
+    endif()
     IF (BUILD_SHARED_LIBS)
       # disable warning on missing DLL interfaces
       ADD_DEFINITIONS("/wd4251")
     ENDIF()
+    # Fix issue: https://github.com/RainerKuemmerle/g2o/issues/66
+    #            Link error LNK2005 due to duplicated symbols
+    add_definitions("/Ob2")	
+	# Fix other stupid warnings:
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS=1)  # Avoid deprecated fprintf(), etc.
+    add_definitions("/nologo")
+    add_definitions("/wd4244") # Conversion from double -> int
+    add_definitions("/wd4267") # Conversion during return
+    add_definitions("/wd4522") # Duplicated operator=() in Eigen headers
   ENDIF(MSVC)
 ELSEIF(CYGWIN)
   MESSAGE(STATUS "Compiling on Cygwin")
@@ -133,14 +144,16 @@ ENDIF()
 
 # Eigen library parallelise itself, though, presumably due to performance issues
 # OPENMP is experimental. We experienced some slowdown with it
-FIND_PACKAGE(OpenMP)
 SET(G2O_USE_OPENMP OFF CACHE BOOL "Build g2o with OpenMP support (EXPERIMENTAL)")
-IF(OPENMP_FOUND AND G2O_USE_OPENMP)
-  SET (G2O_OPENMP 1)
-  SET(g2o_C_FLAGS "${g2o_C_FLAGS} ${OpenMP_C_FLAGS}")
-  SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -DEIGEN_DONT_PARALLELIZE ${OpenMP_CXX_FLAGS}")
-  MESSAGE(STATUS "Compiling with OpenMP support")
-ENDIF(OPENMP_FOUND AND G2O_USE_OPENMP)
+IF(G2O_USE_OPENMP)
+  FIND_PACKAGE(OpenMP)
+  IF(OPENMP_FOUND)
+    SET (G2O_OPENMP 1)
+    SET(g2o_C_FLAGS "${g2o_C_FLAGS} ${OpenMP_C_FLAGS}")
+    SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -DEIGEN_DONT_PARALLELIZE ${OpenMP_CXX_FLAGS}")
+    MESSAGE(STATUS "Compiling with OpenMP support")
+  ENDIF(OPENMP_FOUND)
+ENDIF(G2O_USE_OPENMP)
 
 # OpenGL is used in the draw actions for the different types, as well
 # as for creating the GUI itself
