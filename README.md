@@ -29,6 +29,10 @@ g2o: A General Framework for Graph Optimization
 IEEE International Conference on Robotics and Automation (ICRA), 2011
 http://ais.informatik.uni-freiburg.de/publications/papers/kuemmerle11icra.pdf
 
+### Documentation
+A detailed description of how the library is structured and how to use and extend it can be found in /doc/g2o.pdf
+The API documentation can be generated as described in doc/doxygen/readme.txt
+
 ### License
 g2o is licensed under the BSD License. However, some libraries are available
 under different license terms. See below.
@@ -66,20 +70,32 @@ licenses for more details.
 
 
 ### Requirements
-g2o requires cmake and Eigen3 to build. The other requirements are optional.
   * cmake             http://www.cmake.org/
   * Eigen3            http://eigen.tuxfamily.org
+
+  On Ubuntu / Debian these dependencies are resolved by installing the
+  following packages.
+    - cmake
+    - libeigen3-dev
+
+#### Optional requirements
   * suitesparse       http://www.cise.ufl.edu/research/sparse/SuiteSparse/
   * Qt5               http://qt-project.org
   * libQGLViewer      http://www.libqglviewer.com/
 
   On Ubuntu / Debian these dependencies are resolved by installing the
   following packages.
-    - cmake
-    - libeigen3-dev
     - libsuitesparse-dev
-    - Qt4: `libqt4-dev`, `qt4-qmake`, `libqglviewer-dev` (Or `libqglviewer-qt4-dev` in modern distributions)
-    - Qt5: `libqt5-dev`, `qt5-qmake`, `libqglviewer-dev`
+    - qtdeclarative5-dev
+    - qt5-qmake
+    - libqglviewer-dev
+
+#### Mac OS X
+If using [Homebrew](http://brew.sh/), then
+
+`brew install homebrew/science/g2o`
+
+will install g2o together with its required dependencies. In this case no manual compilation is necessary.
 
 ### Compilation
 Our primary development platform is Linux. Experimental support for
