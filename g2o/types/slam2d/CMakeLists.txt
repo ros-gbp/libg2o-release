@@ -13,6 +13,7 @@ ADD_LIBRARY(types_slam2d ${G2O_LIB_TYPE}
   edge_pointxy.cpp             edge_pointxy.h
   edge_se2_twopointsxy.cpp	edge_se2_twopointsxy.h
   edge_se2_lotsofxy.cpp		edge_se2_lotsofxy.h
+  edge_xy_prior.cpp		edge_xy_prior.h
   g2o_types_slam2d_api.h
 )
 
@@ -24,10 +25,10 @@ IF(G2O_HAVE_OPENGL)
 ENDIF()
 
 INSTALL(TARGETS types_slam2d
-  RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
-  LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
 )
 
 FILE(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
-INSTALL(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/g2o/types/slam2d)
+INSTALL(FILES ${headers} DESTINATION include/g2o/types/slam2d)

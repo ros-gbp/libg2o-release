@@ -28,6 +28,8 @@ ADD_LIBRARY(types_slam3d ${G2O_LIB_TYPE}
   edge_se3_prior.h
   edge_se3_lotsofxyz.cpp
   edge_se3_lotsofxyz.h
+  edge_xyz_prior.cpp
+  edge_xyz_prior.h
   se3quat.h
   se3_ops.h se3_ops.hpp
   edge_pointxyz.cpp edge_pointxyz.h
@@ -52,10 +54,10 @@ ADD_EXECUTABLE(test_slam3d_jacobian test_slam3d_jacobian.cpp)
 TARGET_LINK_LIBRARIES(test_slam3d_jacobian types_slam3d)
 
 INSTALL(TARGETS types_slam3d
-  RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
-  LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
 )
 
 FILE(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
-INSTALL(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/g2o/types/slam3d)
+INSTALL(FILES ${headers} DESTINATION include/g2o/types/slam3d)

@@ -1,7 +1,9 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 SET(CMAKE_LEGACY_CYGWIN_WIN32 0)
 
 PROJECT(g2o)
+
+include(CPack)
 
 # The library prefix
 SET(LIB_PREFIX g2o_)
@@ -51,7 +53,7 @@ endif(MSVC90)
 # avoid the problem of loading both the built and installed versions
 # of the shared targets
 IF(APPLE)
-  SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE) 
+  SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
   SET(CMAKE_INSTALL_RPATH "")
 ENDIF(APPLE)
 
@@ -74,28 +76,6 @@ LIST(APPEND CMAKE_MODULE_PATH ${g2o_SOURCE_DIR}/cmake_modules)
 IF(WIN32)
   ADD_DEFINITIONS(-DWINDOWS)
   MESSAGE(STATUS "Compiling on Windows")
-  IF(MSVC)
-    MESSAGE(STATUS "Compiling with MSVC")
-    ADD_DEFINITIONS(-DNOMINMAX)
-    ADD_DEFINITIONS(-D_USE_MATH_DEFINES)
-    # SSE2 optimizations
-    if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)  # No need to specify if building for x64 (actually, it generates an annoying warning)
-        ADD_DEFINITIONS("/arch:SSE2")
-    endif()
-    IF (BUILD_SHARED_LIBS)
-      # disable warning on missing DLL interfaces
-      ADD_DEFINITIONS("/wd4251")
-    ENDIF()
-    # Fix issue: https://github.com/RainerKuemmerle/g2o/issues/66
-    #            Link error LNK2005 due to duplicated symbols
-    add_definitions("/Ob2")	
-	# Fix other stupid warnings:
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS=1)  # Avoid deprecated fprintf(), etc.
-    add_definitions("/nologo")
-    add_definitions("/wd4244") # Conversion from double -> int
-    add_definitions("/wd4267") # Conversion during return
-    add_definitions("/wd4522") # Duplicated operator=() in Eigen headers
-  ENDIF(MSVC)
 ELSEIF(CYGWIN)
   MESSAGE(STATUS "Compiling on Cygwin")
   ADD_DEFINITIONS(-DCYGWIN)
@@ -115,25 +95,35 @@ IF(ANDROID)
 ENDIF()
 
 # For building the CHOLMOD / CSPARSE solvers
+OPTION (G2O_USE_CHOLMOD "Build g2o with CHOLMOD support" ON)
+
 FIND_PACKAGE(Cholmod)
 FIND_PACKAGE(BLAS)
 FIND_PACKAGE(LAPACK)
-IF(CHOLMOD_FOUND AND BLAS_FOUND AND LAPACK_FOUND)
+
+IF(G2O_USE_CHOLMOD AND CHOLMOD_FOUND AND BLAS_FOUND AND LAPACK_FOUND)
   MESSAGE(STATUS "Found CHOLMOD and its dependencies")
   SET(CHOLMOD_FOUND TRUE)
 ELSE()
   SET(CHOLMOD_FOUND FALSE)
 ENDIF()
 
+OPTION (G2O_USE_CSPARSE "Build g2o with CSParse support" ON)
+
 FIND_PACKAGE(CSparse)
-IF(CSPARSE_FOUND)
-  SET(BUILD_CSPARSE OFF CACHE BOOL "Build local CSparse library")
-ELSE(CSPARSE_FOUND)
-  SET(BUILD_CSPARSE ON CACHE BOOL "Build local CSparse library")
-  IF(BUILD_CSPARSE)
-    SET(CSPARSE_FOUND TRUE)
-  ENDIF()
-ENDIF(CSPARSE_FOUND)
+IF (G2O_USE_CSPARSE)
+  IF(CSPARSE_FOUND)
+    SET(BUILD_CSPARSE OFF CACHE BOOL "Build local CSparse library")
+  ELSE(CSPARSE_FOUND)
+    SET(BUILD_CSPARSE ON CACHE BOOL "Build local CSparse library")
+    IF(BUILD_CSPARSE)
+      SET(CSPARSE_FOUND TRUE)
+    ENDIF()
+  ENDIF(CSPARSE_FOUND)
+ELSE(G2O_USE_CSPARSE)
+  SET(BUILD_CSPARSE OFF "Build local CSparse library")
+ENDIF(G2O_USE_CSPARSE)
+
 OPTION(BUILD_LGPL_SHARED_LIBS "Build LGPL Code as Shared Libraries (LGPL Code)" ON)
 SET (G2O_LGPL_LIB_TYPE STATIC)
 IF (BUILD_LGPL_SHARED_LIBS)
@@ -184,27 +174,93 @@ IF(G2O_BUILD_EXAMPLES)
   MESSAGE(STATUS "Compiling g2o examples")
 ENDIF(G2O_BUILD_EXAMPLES)
 
+OPTION(G2O_FAST_MATH "Enable fast math operations" OFF)
+OPTION(G2O_NO_IMPLICIT_OWNERSHIP_OF_OBJECTS "Disables memory management in the graph types, this requires the callers to manager the memory of edges and nodes" OFF)
+
+# Start of SSE* autodetect code
+# (borrowed from MRPT CMake scripts, BSD)
+OPTION(DO_SSE_AUTODETECT "Enable autodetection of SSE* CPU sets and enable their use in optimized code" ON)
+IF(NOT EXISTS "/proc/cpuinfo")
+	SET(DO_SSE_AUTODETECT OFF)
+ENDIF()
+IF (DO_SSE_AUTODETECT)
+  FILE(READ "/proc/cpuinfo" G2O_CPU_INFO)
+ENDIF()
+
+# Macro for each SSE* var: Invoke with name in uppercase:
+macro(DEFINE_SSE_VAR  _setname)
+	string(TOLOWER ${_setname} _set)
+	IF (DO_SSE_AUTODETECT)
+		# Automatic detection:
+		SET(CMAKE_G2O_HAS_${_setname} 0)
+		IF (${G2O_CPU_INFO} MATCHES ".*${_set}.*")
+			SET(CMAKE_G2O_HAS_${_setname} 1)
+		ENDIF()
+	ELSE (DO_SSE_AUTODETECT)
+		# Manual:
+		SET("DISABLE_${_setname}" OFF CACHE BOOL "Forces compilation WITHOUT ${_setname} extensions")
+		MARK_AS_ADVANCED("DISABLE_${_setname}")
+		SET(CMAKE_G2O_HAS_${_setname} 0)
+		IF (NOT DISABLE_${_setname})
+			SET(CMAKE_G2O_HAS_${_setname} 1)
+		ENDIF (NOT DISABLE_${_setname})
+	ENDIF (DO_SSE_AUTODETECT)
+endmacro(DEFINE_SSE_VAR)
+
+# SSE optimizations:
+DEFINE_SSE_VAR(SSE2)
+DEFINE_SSE_VAR(SSE3)
+DEFINE_SSE_VAR(SSE4_1)
+DEFINE_SSE_VAR(SSE4_2)
+DEFINE_SSE_VAR(SSE4_A)
+
+# Add build flags for clang AND GCC
+if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR CMAKE_COMPILER_IS_GNUCXX)
+  # SSE2?
+  IF (CMAKE_G2O_HAS_SSE2)
+    add_compile_options(-msse2)
+  ENDIF()
+  # SSE3?
+  IF (CMAKE_G2O_HAS_SSE3)
+    add_compile_options(-msse3 -mssse3)
+  ENDIF()
+  # SSE4*?
+  IF (CMAKE_G2O_HAS_SSE4_1)
+    add_compile_options(-msse4.1)
+  ENDIF()
+  IF (CMAKE_G2O_HAS_SSE4_2)
+    add_compile_options(-msse4.2)
+  ENDIF()
+  IF (CMAKE_G2O_HAS_SSE4_A)
+    add_compile_options(-msse4a)
+  ENDIF()
+endif()
+# End of of SSE* autodetect code -------
+
 # Compiler specific options for gcc
 IF(CMAKE_COMPILER_IS_GNUCXX)
   OPTION (BUILD_WITH_MARCH_NATIVE "Build with \"-march native\"" ON)
   MESSAGE(STATUS "Compiling with GCC")
-  
-  IF(NOT ${ARCH} MATCHES arm)
-    # Generic settings for optimisation
-    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -msse4.2")
-    SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3 -msse4.2")
+
+  # Generic settings for optimisation
+  SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+  SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
+
+  IF(G2O_FAST_MATH)
+    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -ffast-math")
   ENDIF()
+
   # switch off optimization for debug builds
   SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
   SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 
   # OS X
   #IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    #SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}") 
-    #SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}") 
+    #SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+    #SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
   #ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   # Linux
-  IF(BUILD_WITH_MARCH_NATIVE AND NOT ${ARCH} MATCHES arm AND ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  IF(BUILD_WITH_MARCH_NATIVE AND NOT "${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm" AND "${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
     SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native")
     SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -march=native")
   ENDIF()
@@ -224,19 +280,58 @@ IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   #SET(g2o_CXX_FLAGS "${g2o_CXX_FLAGS} -Wall -stdlib=libc++")
 ENDIF()
 
-# C++11 support
-IF(NOT MSVC)
-  include(CheckCXXCompilerFlag)
-  CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-  CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-  if(COMPILER_SUPPORTS_CXX11)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-  elseif(COMPILER_SUPPORTS_CXX0X)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-  else()
-    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+IF(MSVC)
+  MESSAGE(STATUS "Compiling with MSVC")
+
+  IF (CMAKE_GENERATOR MATCHES "ARM(64)?$")
+    SET(MSVC_ARM ON)
+  ENDIF()
+
+  ADD_DEFINITIONS(-DNOMINMAX)
+  ADD_DEFINITIONS(-D_USE_MATH_DEFINES)
+
+  # exception handling
+  ADD_DEFINITIONS("/EHsc")
+
+  IF (G2O_FAST_MATH)
+    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /fp:fast")
+  ENDIF()
+
+  SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Ox /Oi")
+  SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /Ox /Oi")
+
+  SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
+  SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
+
+  # SSE2 optimizations
+  # No need to specify if building for x64 (actually, it generates an annoying warning)
+  if (NOT MSVC_ARM)
+    if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+        ADD_DEFINITIONS("/arch:SSE2")
+    endif()
   endif()
-endif()
+
+  IF (BUILD_SHARED_LIBS)
+    # disable warning on missing DLL interfaces
+    ADD_DEFINITIONS("/wd4251")
+  ENDIF()
+
+  # Fix issue: https://github.com/RainerKuemmerle/g2o/issues/66
+  #            Link error LNK2005 due to duplicated symbols
+  add_definitions("/Ob2")
+  # Fix other stupid warnings:
+  add_definitions(-D_CRT_SECURE_NO_WARNINGS=1)  # Avoid deprecated fprintf(), etc.
+  add_definitions("/nologo")
+  # TODO not sure this should be a thing
+  add_definitions("/wd4244") # Conversion from number_t -> int
+  add_definitions("/wd4267") # Conversion during return
+  add_definitions("/wd4522") # Duplicated operator=() in Eigen headers
+
+ENDIF(MSVC)
+
+# C++11 support
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # specifying compiler flags
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${g2o_CXX_FLAGS}")
@@ -256,8 +351,8 @@ SET(G2O_SHARED_LIBS ${BUILD_SHARED_LIBS})
 SET(G2O_LGPL_SHARED_LIBS ${BUILD_LGPL_SHARED_LIBS})
 SET(G2O_CXX_COMPILER "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER}")
 configure_file(config.h.in ${PROJECT_BINARY_DIR}/g2o/config.h)
-include_directories(${PROJECT_BINARY_DIR})
-INSTALL(FILES ${PROJECT_BINARY_DIR}/g2o/config.h DESTINATION ${CMAKE_INSTALL_PREFIX}/include/g2o)
+include_directories(BEFORE ${PROJECT_BINARY_DIR})
+INSTALL(FILES ${PROJECT_BINARY_DIR}/g2o/config.h DESTINATION include/g2o)
 
 # Include the subdirectories
 ADD_SUBDIRECTORY(EXTERNAL)
