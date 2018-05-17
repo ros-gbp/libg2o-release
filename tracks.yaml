@@ -145,11 +145,11 @@ tracks:
     devel_branch: null
     last_version: 2017.4.2
     name: upstream
-    patches: lunar
+    patches: melodic
     release_inc: '1'
     release_repo_url: null
     release_tag: :{ask}
-    ros_distro: lunar
+    ros_distro: melodic
     vcs_type: git
     vcs_uri: https://github.com/RainerKuemmerle/g2o.git
     version: :{ask}
