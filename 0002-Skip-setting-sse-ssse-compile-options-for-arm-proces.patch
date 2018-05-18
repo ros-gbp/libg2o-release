@@ -1,8 +1,8 @@
-From 7a80edac531e9e9c50fc62fa6d753da540e4ef7f Mon Sep 17 00:00:00 2001
+From 419fae4a93909c796edbe857ff349ba8b322ca44 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Christoph=20R=C3=B6smann?=
  <christoph.roesmann@tu-dortmund.de>
 Date: Fri, 18 May 2018 14:09:00 +0200
-Subject: [PATCH 2/2] Skip setting sse/ssse compile options for arm processors
+Subject: [PATCH 2/3] Skip setting sse/ssse compile options for arm processors
 
 ---
  CMakeLists.txt | 2 +-

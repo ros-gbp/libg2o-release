@@ -1,0 +1,27 @@
+From e84f75289198bae8597a72708b226949b03a99a4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Christoph=20R=C3=B6smann?=
+ <christoph.roesmann@tu-dortmund.de>
+Date: Fri, 18 May 2018 15:18:56 +0200
+Subject: [PATCH 3/3] Skipping sse compile options also for aarch64
+
+---
+ CMakeLists.txt | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d5c3002..41a3b7b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -215,7 +215,8 @@ DEFINE_SSE_VAR(SSE4_2)
+ DEFINE_SSE_VAR(SSE4_A)
+ 
+ # Add build flags for clang AND GCC
+-if ((${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR CMAKE_COMPILER_IS_GNUCXX) AND NOT "${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
++if ((${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR CMAKE_COMPILER_IS_GNUCXX) AND NOT "${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm" AND NOT "${CMAKE_SYSTEM_PROCESSOR}" MATCHES "aarch64")
++  message(STATUS "Checking SSE compile options for current processor ${CMAKE_SYSTEM_PROCESSOR}")
+   # SSE2?
+   IF (CMAKE_G2O_HAS_SSE2)
+     add_compile_options(-msse2)
+-- 
+2.7.4
+
