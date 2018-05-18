@@ -357,3 +357,6 @@ INSTALL(FILES ${PROJECT_BINARY_DIR}/g2o/config.h DESTINATION include/g2o)
 # Include the subdirectories
 ADD_SUBDIRECTORY(EXTERNAL)
 ADD_SUBDIRECTORY(g2o)
+
+# Install catkin package.xml
+install(FILES package.xml DESTINATION share/libg2o)
