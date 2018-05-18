@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>libg2o</name>
-  <version>2018.3.23</version>
+  <version>2018.3.24</version>
   <description>The libg2o library from http://openslam.org/g2o.html</description>
   <url>https://github.com/RainerKuemmerle/g2o</url>
 
