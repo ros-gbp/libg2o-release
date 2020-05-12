@@ -67,13 +67,13 @@ namespace g2o {
 
   HyperGraphElementAction* VertexSE3WriteGnuplotAction::operator()(HyperGraph::HyperGraphElement* element, HyperGraphElementAction::Parameters* params_){
     if (typeid(*element).name()!=_typeName)
-      return 0;
+      return nullptr;
     WriteGnuplotAction::Parameters* params=static_cast<WriteGnuplotAction::Parameters*>(params_);
     if (!params->os){
       std::cerr << __PRETTY_FUNCTION__ << ": warning, no valid os specified" << std::endl;
-      return 0;
+      return nullptr;
     }
-    
+
     VertexSE3* v =  static_cast<VertexSE3*>(element);
     Vector6 est=internal::toVectorMQT(v->estimate());
     for (int i=0; i<6; i++)
@@ -95,11 +95,12 @@ namespace g2o {
       glVertex3f(p[0].x(), p[0].y(), p[0].z());
       glVertex3f(p[i].x(), p[i].y(), p[i].z());
       glVertex3f(p[i+1].x(), p[i+1].y(), p[i+1].z());
-    }    
+    }
     glEnd();
   }
 
-  VertexSE3DrawAction::VertexSE3DrawAction(): DrawAction(typeid(VertexSE3).name()){
+  VertexSE3DrawAction::VertexSE3DrawAction()
+      : DrawAction(typeid(VertexSE3).name()), _triangleX(nullptr), _triangleY(nullptr) {
     _cacheDrawActions = 0;
   }
 
@@ -116,16 +117,16 @@ namespace g2o {
     return true;
   }
 
-  HyperGraphElementAction* VertexSE3DrawAction::operator()(HyperGraph::HyperGraphElement* element, 
+  HyperGraphElementAction* VertexSE3DrawAction::operator()(HyperGraph::HyperGraphElement* element,
                  HyperGraphElementAction::Parameters* params_){
     if (typeid(*element).name()!=_typeName)
-      return 0;
+      return nullptr;
     initializeDrawActionsCache();
     refreshPropertyPtrs(params_);
 
     if (! _previousParams)
       return this;
-    
+
     if (_show && !_show->value())
       return this;
 

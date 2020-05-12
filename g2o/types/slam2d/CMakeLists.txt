@@ -1,4 +1,4 @@
-ADD_LIBRARY(types_slam2d ${G2O_LIB_TYPE}
+add_library(types_slam2d ${G2O_LIB_TYPE}
   se2.h
   edge_se2_pointxy_bearing.h  edge_se2_prior.h
   edge_se2.cpp                  edge_se2_pointxy_calib.cpp  types_slam2d.cpp
@@ -17,18 +17,22 @@ ADD_LIBRARY(types_slam2d ${G2O_LIB_TYPE}
   g2o_types_slam2d_api.h
 )
 
-SET_TARGET_PROPERTIES(types_slam2d PROPERTIES OUTPUT_NAME ${LIB_PREFIX}types_slam2d)
+set_target_properties(types_slam2d PROPERTIES OUTPUT_NAME ${LIB_PREFIX}types_slam2d)
+if (APPLE)
+  set_target_properties(types_slam2d PROPERTIES INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+endif()
+target_link_libraries(types_slam2d core)
+if(G2O_HAVE_OPENGL)
+  target_link_libraries(types_slam2d opengl_helper ${OPENGL_gl_LIBRARY} )
+endif()
 
-TARGET_LINK_LIBRARIES(types_slam2d core)
-IF(G2O_HAVE_OPENGL)
-  TARGET_LINK_LIBRARIES(types_slam2d opengl_helper ${OPENGL_gl_LIBRARY} )
-ENDIF()
-
-INSTALL(TARGETS types_slam2d
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
+install(TARGETS types_slam2d
+  EXPORT ${G2O_TARGETS_EXPORT_NAME}
+  RUNTIME DESTINATION ${RUNTIME_DESTINATION}
+  LIBRARY DESTINATION ${LIBRARY_DESTINATION}
+  ARCHIVE DESTINATION ${ARCHIVE_DESTINATION}
+  INCLUDES DESTINATION ${INCLUDES_DESTINATION}
 )
 
-FILE(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
-INSTALL(FILES ${headers} DESTINATION include/g2o/types/slam2d)
+file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+install(FILES ${headers} DESTINATION ${INCLUDES_INSTALL_DIR}/types/slam2d)

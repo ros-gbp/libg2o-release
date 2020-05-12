@@ -24,27 +24,6 @@
 // NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-namespace {
-
-struct QuadraticFormLock {
-  QuadraticFormLock(OptimizableGraph::Vertex& vertex) : _vertex(vertex) {
-#ifdef G2O_OPENMP
-    _vertex.lockQuadraticForm();
-#endif
-  }
-
-  ~QuadraticFormLock() {
-#ifdef G2O_OPENMP
-    _vertex.unlockQuadraticForm();
-#endif
-  }
-
-private:
-  OptimizableGraph::Vertex& _vertex;
-};
-
-} // anonymous namespace
-
 template <int D, typename E, typename VertexXiType, typename VertexXjType>
 OptimizableGraph::Vertex* BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::createFrom(){
   return createVertex(0);
@@ -60,7 +39,7 @@ OptimizableGraph::Vertex* BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::crea
   switch(i) {
   case 0: return new VertexXiType();
   case 1: return new VertexXjType();
-  default: return 0;
+  default: return nullptr;
   }
 }
 
@@ -101,7 +80,7 @@ void BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::constructQuadraticForm()
         Eigen::Matrix<number_t, VertexXiType::Dimension, D, Eigen::ColMajor> AtO = A.transpose() * omega;
 
         {
-          QuadraticFormLock lck(*from);
+          internal::QuadraticFormLock lck(*from);
 
           from->b().noalias() += A.transpose() * omega_r;
           from->A().noalias() += AtO*A;
@@ -115,7 +94,7 @@ void BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::constructQuadraticForm()
         }
       }
       if (toNotFixed) {
-        QuadraticFormLock lck(*to);
+        internal::QuadraticFormLock lck(*to);
 
         to->b().noalias() += B.transpose() * omega_r;
         to->A().noalias() += B.transpose() * omega * B;
@@ -131,7 +110,7 @@ void BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::constructQuadraticForm()
       omega_r *= rho[1];
       if (fromNotFixed) {
         {
-          QuadraticFormLock lck(*from);
+          internal::QuadraticFormLock lck(*from);
 
           from->b().noalias() += A.transpose() * omega_r;
           from->A().noalias() += A.transpose() * weightedOmega * A;
@@ -145,7 +124,7 @@ void BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::constructQuadraticForm()
         }
       }
       if (toNotFixed) {
-        QuadraticFormLock lck(*to);
+        internal::QuadraticFormLock lck(*to);
 
         to->b().noalias() += B.transpose() * omega_r;
         to->A().noalias() += B.transpose() * weightedOmega * B;
@@ -180,7 +159,7 @@ void BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::linearizeOplus()
   ErrorVector errorBeforeNumeric = _error;
 
   if (iNotFixed) {
-    QuadraticFormLock lck(*vi);
+    internal::QuadraticFormLock lck(*vi);
     //Xi - estimate the jacobian numerically
     number_t add_vi[VertexXiType::Dimension] = {};
 
@@ -205,7 +184,7 @@ void BaseBinaryEdge<D, E, VertexXiType, VertexXjType>::linearizeOplus()
   }
 
   if (jNotFixed) {
-    QuadraticFormLock lck(*vj);
+    internal::QuadraticFormLock lck(*vj);
     //Xj - estimate the jacobian numerically
     number_t add_vj[VertexXjType::Dimension] = {};
 

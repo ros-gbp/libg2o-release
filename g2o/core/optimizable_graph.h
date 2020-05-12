@@ -29,9 +29,6 @@
 
 #include <set>
 #include <iostream>
-#include <list>
-#include <limits>
-#include <cmath>
 #include <typeinfo>
 
 #include "openmp_mutex.h"
@@ -47,9 +44,22 @@ namespace g2o {
 
   class HyperGraphAction;
   struct OptimizationAlgorithmProperty;
-  class Cache;
   class CacheContainer;
   class RobustKernel;
+
+  namespace internal {
+  template <typename Derived>
+  bool writeVector(std::ostream& os, const Eigen::DenseBase<Derived>& b) {
+    for (int i = 0; i < b.size(); i++) os << b(i) << " ";
+    return os.good();
+  }
+
+  template <typename Derived>
+  bool readVector(std::istream& is, Eigen::DenseBase<Derived>& b) {
+    for (int i = 0; i < b.size() && is.good(); i++) is >> b(i);
+    return true;
+  }
+  }  // namespace internal
 
   /**
      @addtogroup g2o
@@ -112,7 +122,7 @@ namespace g2o {
 
         //! returns a deep copy of the current vertex
         virtual Vertex* clone() const ;
-	
+
         virtual ~Vertex();
 
         //! sets the node to the origin (used in the multilevel stuff)
@@ -349,12 +359,12 @@ namespace g2o {
     class G2O_CORE_API Edge: public HyperGraph::Edge, public HyperGraph::DataContainer {
       private:
         friend struct OptimizableGraph;
-	
+
     public:
         Edge();
         virtual ~Edge();
         virtual Edge* clone() const;
-	
+
         // indicates if all vertices are fixed
         virtual bool allVerticesFixed() const = 0;
 
@@ -439,9 +449,9 @@ namespace g2o {
         //! returns the dimensions of the error function
         int dimension() const { return _dimension;}
 
-        G2O_ATTRIBUTE_DEPRECATED(virtual Vertex* createFrom()) {return 0;}
-	G2O_ATTRIBUTE_DEPRECATED(virtual Vertex* createTo())   {return 0;}
-	virtual Vertex* createVertex(int) {return 0;}
+        G2O_ATTRIBUTE_DEPRECATED(virtual Vertex* createFrom()) { return nullptr; }
+        G2O_ATTRIBUTE_DEPRECATED(virtual Vertex* createTo()) { return nullptr; }
+        virtual Vertex* createVertex(int) { return nullptr; }
 
         //! read the vertex from a stream, i.e., the internal state of the vertex
         virtual bool read(std::istream& is) = 0;
@@ -664,6 +674,8 @@ namespace g2o {
 
     ParameterContainer _parameters;
     JacobianWorkspace _jacobianWorkspace;
+
+    void performActions(int iter, HyperGraphActionSet& actions);
   };
 
   /**

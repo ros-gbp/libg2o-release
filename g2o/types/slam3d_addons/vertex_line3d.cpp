@@ -26,6 +26,7 @@
 
 #include "vertex_line3d.h"
 
+#include "g2o/stuff/misc.h"
 #include "g2o/stuff/opengl_wrapper.h"
 
 namespace g2o {
@@ -33,7 +34,7 @@ namespace g2o {
   VertexLine3D::VertexLine3D() {
     color << cst(1.0), cst(0.5), cst(0.0);
   }
-  
+
   bool VertexLine3D::read(std::istream& is) {
     Vector6 lv;
     for(int i = 0; i < 6; ++i) {
@@ -52,7 +53,8 @@ namespace g2o {
   }
 
 #ifdef G2O_HAVE_OPENGL
-  VertexLine3DDrawAction::VertexLine3DDrawAction() : DrawAction(typeid(VertexLine3D).name()) {}
+  VertexLine3DDrawAction::VertexLine3DDrawAction()
+      : DrawAction(typeid(VertexLine3D).name()), _lineLength(nullptr), _lineWidth(nullptr) {}
 
   bool VertexLine3DDrawAction::refreshPropertyPtrs(HyperGraphElementAction::Parameters* params_) {
     if(!DrawAction::refreshPropertyPtrs(params_)) {
@@ -72,14 +74,14 @@ namespace g2o {
   HyperGraphElementAction* VertexLine3DDrawAction::operator()(HyperGraph::HyperGraphElement* element,
 							     HyperGraphElementAction::Parameters* params_) {
     if(typeid(*element).name() != _typeName) {
-      return 0;
+      return nullptr;
     }
 
     refreshPropertyPtrs(params_);
     if(!_previousParams) {
       return this;
     }
-    
+
     if(_show && !_show->value()) {
       return this;
     }
@@ -92,7 +94,7 @@ namespace g2o {
     glPushMatrix();
     glColor3f(float(that->color(0)), float(that->color(1)), float(that->color(2)));
     if(_lineLength && _lineWidth) {
-      glLineWidth(float(_lineWidth->value())); 
+      glLineWidth(float(_lineWidth->value()));
       glBegin(GL_LINES);
       glNormal3f(float(npoint.x()), float(npoint.y()), float(npoint.z()));
       glVertex3f(float(npoint.x() - direction.x() * _lineLength->value()/2),
@@ -100,7 +102,7 @@ namespace g2o {
 		 float(npoint.z() - direction.z() * _lineLength->value()/2));
       glVertex3f(float(npoint.x() + direction.x() * _lineLength->value()/2),
 		 float(npoint.y() + direction.y() * _lineLength->value()/2),
-		 float(npoint.z() + direction.z() * _lineLength->value()/2));      
+		 float(npoint.z() + direction.z() * _lineLength->value()/2));
       glEnd();
     }
     glPopMatrix();
@@ -108,5 +110,5 @@ namespace g2o {
     return this;
   }
 #endif
-  
+
 }

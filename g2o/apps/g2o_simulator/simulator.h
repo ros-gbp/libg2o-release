@@ -29,6 +29,7 @@
 
 #include <string>
 #include <set>
+#include <list>
 #include "g2o/config.h"
 #include "g2o/types/slam3d/types_slam3d.h"
 #include "g2o/stuff/sampler.h"
@@ -261,7 +262,7 @@ class BinarySensor: public BaseSensor {
         return;
 
       // naive search. just for initial testing
-      for(std::set<BaseWorldObject*>::iterator it=world()->objects().begin(); it!=world()->objects().end(); it++){
+      for(std::set<BaseWorldObject*>::iterator it=world()->objects().begin(); it!=world()->objects().end(); ++it){
         WorldObjectType * wo = dynamic_cast<WorldObjectType*>(*it);
         if (wo){
           EdgeType* e=mkEdge(wo);

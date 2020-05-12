@@ -1,4 +1,4 @@
-ADD_LIBRARY(types_slam3d ${G2O_LIB_TYPE}
+add_library(types_slam3d ${G2O_LIB_TYPE}
   dquat2mat.cpp dquat2mat.h
   isometry3d_mappings.h
   isometry3d_mappings.cpp
@@ -26,6 +26,8 @@ ADD_LIBRARY(types_slam3d ${G2O_LIB_TYPE}
   edge_se3_pointxyz_depth.h
   edge_se3_prior.cpp
   edge_se3_prior.h
+  edge_se3_xyzprior.cpp
+  edge_se3_xyzprior.h
   edge_se3_lotsofxyz.cpp
   edge_se3_lotsofxyz.h
   edge_xyz_prior.cpp
@@ -38,26 +40,22 @@ ADD_LIBRARY(types_slam3d ${G2O_LIB_TYPE}
 )
 
 
-SET_TARGET_PROPERTIES(types_slam3d PROPERTIES OUTPUT_NAME ${LIB_PREFIX}types_slam3d)
-TARGET_LINK_LIBRARIES(types_slam3d core)
-IF(G2O_HAVE_OPENGL)
-  TARGET_LINK_LIBRARIES(types_slam3d opengl_helper ${OPENGL_gl_LIBRARY} )
-ENDIF()
+set_target_properties(types_slam3d PROPERTIES OUTPUT_NAME ${LIB_PREFIX}types_slam3d)
+if (APPLE)
+  set_target_properties(types_slam3d PROPERTIES INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+endif()
+target_link_libraries(types_slam3d core)
+if(G2O_HAVE_OPENGL)
+  target_link_libraries(types_slam3d opengl_helper ${OPENGL_gl_LIBRARY} )
+endif()
 
-ADD_EXECUTABLE(test_isometry3d_mappings test_isometry3d_mappings.cpp)
-TARGET_LINK_LIBRARIES(test_isometry3d_mappings types_slam3d)
-
-ADD_EXECUTABLE(test_mat2quat_jacobian test_mat2quat_jacobian.cpp)
-TARGET_LINK_LIBRARIES(test_mat2quat_jacobian types_slam3d)
-
-ADD_EXECUTABLE(test_slam3d_jacobian test_slam3d_jacobian.cpp)
-TARGET_LINK_LIBRARIES(test_slam3d_jacobian types_slam3d)
-
-INSTALL(TARGETS types_slam3d
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
+install(TARGETS types_slam3d
+  EXPORT ${G2O_TARGETS_EXPORT_NAME}
+  RUNTIME DESTINATION ${RUNTIME_DESTINATION}
+  LIBRARY DESTINATION ${LIBRARY_DESTINATION}
+  ARCHIVE DESTINATION ${ARCHIVE_DESTINATION}
+  INCLUDES DESTINATION ${INCLUDES_DESTINATION}
 )
 
-FILE(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
-INSTALL(FILES ${headers} DESTINATION include/g2o/types/slam3d)
+file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+install(FILES ${headers} DESTINATION ${INCLUDES_INSTALL_DIR}/types/slam3d)

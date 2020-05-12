@@ -36,6 +36,29 @@
 
 namespace g2o {
 
+  namespace internal {
+
+  #ifdef G2O_OPENMP
+    struct QuadraticFormLock {
+      explicit QuadraticFormLock(OptimizableGraph::Vertex& vertex)
+        :_vertex(vertex) {
+          _vertex.lockQuadraticForm();
+        }
+      ~QuadraticFormLock() {
+        _vertex.unlockQuadraticForm();
+      }
+      private:
+      OptimizableGraph::Vertex& _vertex;
+    };
+  #else
+    struct QuadraticFormLock {
+      explicit QuadraticFormLock(OptimizableGraph::Vertex& ) { }
+      ~QuadraticFormLock() { }
+    };
+  #endif
+
+  } // internal namespace
+
   template <int D, typename E>
   class BaseEdge : public OptimizableGraph::Edge
   {
@@ -91,12 +114,27 @@ namespace g2o {
       /**
        * calculate the robust information matrix by updating the information matrix of the error
        */
-      InformationType robustInformation(const Vector3& rho)
+      InformationType robustInformation(const Vector3& rho) const
       {
         InformationType result = rho[1] * _information;
         //ErrorVector weightedErrror = _information * _error;
         //result.noalias() += 2 * rho[2] * (weightedErrror * weightedErrror.transpose());
         return result;
+      }
+
+      bool writeInformationMatrix(std::ostream& os) const {
+        for (int i = 0; i < information().rows(); ++i)
+          for (int j = i; j < information().cols(); ++j) os << " " << information()(i, j);
+        return os.good();
+      }
+
+      bool readInformationMatrix(std::istream& is) {
+        for (int i = 0; i < information().rows() && is.good(); ++i)
+          for (int j = i; j < information().cols() && is.good(); ++j) {
+            is >> information()(i, j);
+            if (i != j) information()(j, i) = information()(i, j);
+          }
+        return true;
       }
 
     public:

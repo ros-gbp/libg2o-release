@@ -47,7 +47,7 @@ namespace g2o {
   void ParameterContainer::clear() {
     if (!_isMainStorage)
       return;
-    for (iterator it = begin(); it!=end(); it++){
+    for (iterator it = begin(); it!=end(); ++it){
       delete it->second;
     }
     BaseClass::clear();
@@ -70,21 +70,21 @@ namespace g2o {
   Parameter* ParameterContainer::getParameter(int id) {
     iterator it=find(id);
     if (it==end())
-      return 0;
+      return nullptr;
     return it->second;
   }
 
   const Parameter* ParameterContainer::getParameter(int id) const {
     const_iterator it=find(id);
     if (it==end())
-      return 0;
+      return nullptr;
     return it->second;
   }
 
   Parameter* ParameterContainer::detachParameter(int id){
     iterator it=find(id);
     if (it==end())
-      return 0;
+      return nullptr;
     Parameter* p=it->second;
     erase(it);
     return p;
@@ -92,7 +92,7 @@ namespace g2o {
   
   bool ParameterContainer::write(std::ostream& os) const{
     Factory* factory = Factory::instance();
-    for (const_iterator it=begin(); it!=end(); it++){
+    for (const_iterator it=begin(); it!=end(); ++it){
       os << factory->tag(it->second) << " ";
       os << it->second->id() << " ";
       it->second->write(os);

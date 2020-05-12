@@ -1,10 +1,14 @@
 sudo: required
-dist: trusty
+dist: bionic
 language: cpp
 
 os:
   - linux
   - osx
+
+env:
+  global:
+    - MAKEFLAGS="-j 2"
 
 notifications:
   email:
@@ -21,16 +25,24 @@ before_install:
   - env | sort
 
 install:
-  #- script/install-deps-linux.sh
   - script/install-deps-${TRAVIS_OS_NAME}.sh
 
 before_script:
   - mkdir build
   - cd build
-  - cmake ..
+  - if [[ "$CC" == "gcc" && "$TRAVIS_OS_NAME" == "linux" ]]; then
+      export CC=gcc-8 ;
+      export CXX=g++-8 ;
+    fi
+  - cmake --version
+  - cmake -DBUILD_UNITTESTS=ON ..
   - cat g2o/config.h
 
-script: make
+script:
+  - make
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      ctest --extra-verbose ;
+    fi
 
 # right now only build the master branch
 branches:

@@ -46,17 +46,13 @@ namespace g2o {
       return optimizationAlgo;
     }
     else
-      return 0;
+      return nullptr;
   }
 
-  class StructureOnlyCreator : public AbstractOptimizationAlgorithmCreator
-  {
-    public:
-      StructureOnlyCreator(const OptimizationAlgorithmProperty& p) : AbstractOptimizationAlgorithmCreator(p) {}
-      virtual OptimizationAlgorithm* construct()
-      {
-        return createSolver(property().name);
-      }
+  class StructureOnlyCreator : public AbstractOptimizationAlgorithmCreator {
+   public:
+    explicit StructureOnlyCreator(const OptimizationAlgorithmProperty& p) : AbstractOptimizationAlgorithmCreator(p) {}
+    virtual OptimizationAlgorithm* construct() { return createSolver(property().name); }
   };
 
   G2O_REGISTER_OPTIMIZATION_LIBRARY(structure_only);

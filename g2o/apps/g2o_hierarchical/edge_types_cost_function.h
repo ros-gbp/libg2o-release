@@ -28,8 +28,8 @@
 #define G2O_EDGE_TYPES_COST_FUNCTION_
 
 #include <string>
-#include "g2o/core/sparse_optimizer.h"
 #include "g2o/core/hyper_dijkstra.h"
+#include "g2o/core/optimizable_graph.h"
 
 namespace g2o {
 
@@ -44,7 +44,7 @@ struct EdgeTypesCostFunction: public HyperDijkstra::CostFunction {
   //! @param edgeTag: the tag of the edge type to consider
   //! @param vertexTag: the tag of the vertex to  consider
   //! @param level: the level of the edge
-  EdgeTypesCostFunction(std::string edgeTag, std::string vertexTag, int level);
+  EdgeTypesCostFunction(const std::string& edgeTag, const std::string& vertexTag, int level);
 
   //!cost operator
   virtual double operator() (HyperGraph::Edge* e_, HyperGraph::Vertex* from, HyperGraph::Vertex* to);
