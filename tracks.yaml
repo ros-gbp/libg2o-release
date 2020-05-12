@@ -168,10 +168,10 @@ tracks:
       :{release_inc}
     devel_branch: null
     last_release: master
-    last_version: 2020.5.0
+    last_version: 2020.5.3
     name: upstream
     patches: noetic
-    release_inc: '2'
+    release_inc: '1'
     release_repo_url: null
     release_tag: :{ask}
     ros_distro: noetic
