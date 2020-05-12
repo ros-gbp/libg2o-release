@@ -231,7 +231,8 @@ DEFINE_SSE_VAR(SSE4_2)
 DEFINE_SSE_VAR(SSE4_A)
 
 # Add build flags for clang AND GCC
-if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR CMAKE_COMPILER_IS_GNUCXX)
+if ((${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR CMAKE_COMPILER_IS_GNUCXX) AND NOT "${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm" AND NOT "${CMAKE_SYSTEM_PROCESSOR}" MATCHES "aarch64")
+  message(STATUS "Checking SSE compile options for current processor ${CMAKE_SYSTEM_PROCESSOR}")
   # SSE2?
   if (CMAKE_G2O_HAS_SSE2)
     add_compile_options(-msse2)
@@ -414,3 +415,6 @@ endif()
 # Include the subdirectories
 add_subdirectory(EXTERNAL)
 add_subdirectory(g2o)
+
+# Install catkin package.xml
+install(FILES package.xml DESTINATION share/libg2o)
